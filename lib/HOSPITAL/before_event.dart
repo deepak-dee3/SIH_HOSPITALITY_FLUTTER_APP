@@ -165,6 +165,7 @@ class before_event_pageState extends State<before_event> {
 
                   if(before_formkey.currentState!.validate())
           {
+            
             setState(() {
              
              before_hos_name = before_hos_name_controller.text.trim();
