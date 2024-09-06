@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "450289499651",
+    "firebase_url": "https://sih-2024-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sih-2024-project",
+    "storage_bucket": "sih-2024-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450289499651:android:1fa8994f437479af409836",
+        "android_client_info": {
+          "package_name": "com.example.sih2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuFbxSD9W23GecgOZDLZK7DVvi-Jjgkr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
