@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sih2024/FIREBASE/firebase_after_event.dart';
 
 class HospitalDetailsPage extends StatelessWidget {
   final Map<String, dynamic> hospitalData; // Data to display on this page
@@ -472,6 +473,47 @@ class HospitalDetailsPage extends StatelessWidget {
                   ],
                 ),
               )),
+
+              SizedBox(height:screenHeight*0.08),
+
+               GestureDetector(
+              onTap:(){
+                
+                delete("HOSPITAL'S",hospitalData['hospital_name']);
+
+              //  Navigator.push(context,MaterialPageRoute(builder: (context) => enter_details_hospoital()));
+
+               
+              },child:Container(alignment: Alignment.center,
+      height:  screenHeight * 0.08,
+      width:double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      //color: Colors.red,
+
+      decoration: BoxDecoration(
+         boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 18, 8, 88).withOpacity(0.6),
+                    blurRadius: 5,
+                    spreadRadius: 1,
+                    offset: Offset(0, 0),
+                  ),
+                 
+                  
+                ],
+        borderRadius: BorderRadius.circular(40),
+        //color: const Color.fromARGB(255, 13, 124, 17),
+        color:const Color.fromARGB(255, 195, 28, 16)
+       
+      
+      ),child:
+      
+        Text('Delete Hospital',style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 17,))
+      
+      )),
+
+
+
                     ],
                   ),
                 ),

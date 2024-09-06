@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/ADMIN/after_eventlist.dart';
 import 'package:sih2024/ADMIN/hospital_list.dart';
+import 'package:sih2024/ADMIN/program_list_admin.dart';
 import 'package:sih2024/HOSPITAL/before_event.dart';
 import 'package:sih2024/PUBLIC/new.dart';
 import 'package:sih2024/PUBLIC/program_list.dart';
@@ -50,7 +51,7 @@ class _admin_main_pageState extends State<admin_main_page> {
     ),
     children: [
       GestureDetector(onTap:(){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => EventsListPagess()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => EventsListPagess_admin()));
       },
         child:
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
