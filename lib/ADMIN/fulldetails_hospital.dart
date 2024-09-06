@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/FIREBASE/firebase_after_event.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HospitalDetailsPage extends StatelessWidget {
   final Map<String, dynamic> hospitalData; // Data to display on this page
@@ -477,7 +478,18 @@ class HospitalDetailsPage extends StatelessWidget {
               SizedBox(height:screenHeight*0.08),
 
                GestureDetector(
-              onTap:(){
+                 onTap: (){
+                 Fluttertoast.showToast(
+      msg: 'Make Double tap to delete the hospital',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+                print('Make Double tap to delete the hospital ');
+              },
+              onDoubleTap:(){
                 
                 delete("HOSPITAL'S",hospitalData['hospital_name']);
 

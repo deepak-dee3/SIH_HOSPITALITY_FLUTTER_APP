@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sih2024/FIREBASE/firebase_imp.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class EventDetailPages_admin extends StatelessWidget {
   final Map<String, dynamic> event;
@@ -37,7 +38,20 @@ class EventDetailPages_admin extends StatelessWidget {
             SizedBox(height: 50,),
 
              GestureDetector(
-              onTap:(){
+
+              onTap: (){
+                 Fluttertoast.showToast(
+      msg: 'Make Double tap to delete the program',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+                print('Make Double tap to delete the program ');
+              },
+              
+              onDoubleTap:(){
                 
                 delete("BEFORE EVENT",event['Program']);
 

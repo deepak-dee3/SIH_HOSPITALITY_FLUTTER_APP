@@ -73,8 +73,6 @@ class _hos_opening_pageState extends State<hos_opening_page> {
             )),),
 
             SizedBox(height: 50,),
-            
-
           ]
         ))))
         )
