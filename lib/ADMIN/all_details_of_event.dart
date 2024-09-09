@@ -228,7 +228,7 @@ class EventDetailPage extends StatelessWidget {
                           prefixIcon: Icon(Icons.local_hospital,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Type']}".toUpperCase(),
+                          hintText: "${event['Type']}".toUpperCase() + " Hospital".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),

@@ -13,7 +13,7 @@ class before_event extends StatefulWidget{
 class before_event_pageState extends State<before_event> {
 
 
-   String before_hos_name =' ',before_program_name =' ',before_place=' ',before_date=' ',before_availability=' ';
+   String before_hos_name =' ',before_program_name =' ',before_place=' ',before_date=' ',before_availability=' ',before_sd=' ',before_dis=' ',before_state=' ';
  
 
   TextEditingController before_hos_name_controller = TextEditingController();
@@ -21,6 +21,10 @@ class before_event_pageState extends State<before_event> {
   TextEditingController before_place_controller = TextEditingController();
   TextEditingController before_date_contoller = TextEditingController();
   TextEditingController before_availability_controller = TextEditingController();
+  TextEditingController before_sub_dis_controller = TextEditingController();
+  TextEditingController before_dis_contoller = TextEditingController();
+  TextEditingController before_state_or_union_controller = TextEditingController();
+
   
   
 
@@ -156,6 +160,69 @@ class before_event_pageState extends State<before_event> {
 
           )
           ),
+           SizedBox(height: screenHeight*0.04,),
+
+          Align(alignment: Alignment.centerLeft,child:Text("Sub District :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+            controller: before_sub_dis_controller,
+
+            decoration: InputDecoration(
+              hintText: 'eg : Perundurai',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),
+           SizedBox(height: screenHeight*0.04,),
+
+          Align(alignment: Alignment.centerLeft,child:Text("District :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+            controller: before_dis_contoller,
+
+            decoration: InputDecoration(
+              hintText: 'eg : Erode',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),
+           SizedBox(height: screenHeight*0.04,),
+
+          Align(alignment: Alignment.centerLeft,child:Text("State / Union Territory :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+            controller: before_state_or_union_controller,
+
+            decoration: InputDecoration(
+              hintText: 'eg : TamilNadu / Puducherry',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),
 
           SizedBox(height: screenHeight*0.06,),
 
@@ -173,6 +240,9 @@ class before_event_pageState extends State<before_event> {
              before_place = before_place_controller.text.trim();
              before_date = before_date_contoller.text.trim();
              before_availability = before_availability_controller.text.trim();
+             before_sd = before_sub_dis_controller.text.trim();
+             before_dis = before_dis_contoller.text.trim();
+             before_state = before_state_or_union_controller.text.trim();
 
             });
           }
@@ -183,6 +253,9 @@ class before_event_pageState extends State<before_event> {
              before_place,
              before_date ,
              before_availability ,
+             before_sd,
+             before_dis,
+             before_state,
 
           );
 

@@ -35,12 +35,8 @@ class Myapp extends StatelessWidget{
       home:LoginPage(),
       debugShowCheckedModeBanner: false,
 
-    );
-   
-    
+    );   
   }
-
-  
 
 }
 

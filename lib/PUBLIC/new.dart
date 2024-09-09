@@ -74,6 +74,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('BEFORE EVENT')
+                      .orderBy('Date Of Event', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -83,15 +84,24 @@ class _EventsListPagessState extends State<EventsListPagess> {
                       return Center(child: Text('No events found.'));
                     }
 
-                    final events = snapshot.data!.docs.where((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
-                      final hospitalName = data['Hospital_name'].toLowerCase();
-                      final program = data['Program'].toLowerCase();
-                      final date = data['Date Of Event'].toLowerCase();
-                      return hospitalName.contains(_searchQuery) ||
-                          program.contains(_searchQuery) ||
-                          date.contains(_searchQuery);
-                    }).toList();
+                   final events = snapshot.data!.docs.where((doc) {
+  final data = doc.data() as Map<String, dynamic>;
+  final hospitalName = data['Hospital_name'].toLowerCase();
+  final program = data['Program'].toLowerCase();
+  final date = data['Date Of Event'].toLowerCase();
+  final district = data['District'].toLowerCase();
+  final subDistrict = data['Sub_District'].toLowerCase();
+  final state = data['State / Union Territory'].toLowerCase();
+
+  // Check if the search query matches any of these fields
+  return hospitalName.contains(_searchQuery) ||
+         program.contains(_searchQuery) ||
+         date.contains(_searchQuery) ||
+         district.contains(_searchQuery) ||
+         subDistrict.contains(_searchQuery) ||
+         state.contains(_searchQuery);
+}).toList();
+
 
                     return ListView.builder(
                       itemCount: events.length,
@@ -100,7 +110,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                         return Padding(
                           padding: EdgeInsets.all(16),
                           child: Container(
-                            height: 100,
+                            height: 190,
                             child: ListTile(
                               contentPadding: EdgeInsets.all(7),
                               shape: RoundedRectangleBorder(
@@ -112,7 +122,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                                 event['Program'].toUpperCase(),
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               ),
-                              subtitle: Padding(
+                              subtitle:/* Padding(
                                 padding: EdgeInsets.all(8),
                                 child: Row(
                                   children: [
@@ -124,7 +134,38 @@ class _EventsListPagessState extends State<EventsListPagess> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),*/ Padding(
+  padding: EdgeInsets.all(8),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Icon(Icons.location_pin, color: Colors.green),
+          SizedBox(width: screenWidth * 0.01),
+          Text(
+            event['Hospital_name'].toUpperCase() ,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ],
+      ),
+      SizedBox(height: 5), // Add some spacing
+      Text(
+        'District: ${event['District']}'.toUpperCase(),
+        style: TextStyle(fontSize: 16),
+      ),
+      Text(
+        'Sub District: ${event['Sub_District']}'.toUpperCase(),
+        style: TextStyle(fontSize: 16),
+      ),
+      Text(
+        'State: ${event['State / Union Territory']}'.toUpperCase(),
+        style: TextStyle(fontSize: 16),
+      ),
+    ],
+  ),
+),
+
                               trailing: Text(
                                 event['Date Of Event'],
                                 style: TextStyle(
