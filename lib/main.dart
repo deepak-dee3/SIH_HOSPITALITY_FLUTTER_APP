@@ -34,12 +34,9 @@ class Myapp extends StatelessWidget{
     return MaterialApp(
       home:LoginPage(),
       debugShowCheckedModeBanner: false,
-
     );   
   }
-
 }
-
 class LoginPage extends StatefulWidget{
   @override
   State<LoginPage> createState() => _LoginPageState();
