@@ -52,10 +52,14 @@ class LoginPage extends StatefulWidget{
 class _LoginPageState extends State<LoginPage> {
 
   String login_email = ' ', login_pass = ' '; 
+  final String passkey = '123';
+   String? passkeyError;
  
 
   TextEditingController login_emailcontroller = TextEditingController();
   TextEditingController login_passcontroller = TextEditingController();
+    TextEditingController passkeyController = TextEditingController();
+
   
 
   final login_formkey = GlobalKey<FormState>();
@@ -368,7 +372,88 @@ Align(
           children: [
             GestureDetector(
         onTap:(){
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>admin_main_page()));
+         // Navigator.push(context, MaterialPageRoute(builder: (context) =>admin_main_page()));
+         
+         showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String? passkeyError;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              shadowColor: Colors.blue,
+              backgroundColor: Color.fromARGB(255, 10, 132, 232),
+              title: Row(children: [
+
+                Shimmer.fromColors( baseColor:Colors.black, highlightColor: Colors.green,child:Icon(Icons.lock,size: 30,),),
+                SizedBox(width: 10,),
+                Text('Secure Key',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+
+              ],),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    style: TextStyle(color:Colors.white),
+                    controller: passkeyController,
+                    keyboardAppearance: Brightness.light,
+                   
+                    decoration: InputDecoration(
+                     
+                      hintText: 'Enter the pass key',hintStyle: TextStyle(color: Colors.white)),
+                  ),
+                  if (passkeyError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        passkeyError!,
+                        style: TextStyle(color: Colors.red, fontSize: 16,fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Shimmer.fromColors(baseColor: Colors.green, highlightColor: Colors.white,child:Text('Submit',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),),
+                  onPressed: () {
+                    if (passkeyController.text.trim() == passkey) {
+                      passkeyController.clear(); // Clear the passkey field
+                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.push(
+                        context,
+                         PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => admin_main_page(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = 0.0;
+                          const end = 1.0;
+                          const curve = Curves.elasticIn;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          var opacityAnimation = animation.drive(tween);
+
+                          return FadeTransition(
+                            opacity: opacityAnimation,
+                            child: child,
+                          );
+                        },
+                      ),
+                      );
+                    } else {
+                      passkeyController.clear();
+                      setState(() {
+                        passkeyError = 'Enter correct pass key';
+                      });
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+            
 
         },
 

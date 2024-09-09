@@ -24,7 +24,7 @@ class HospitalDetailsPage extends StatelessWidget {
     borderRadius: BorderRadius.circular(20),
   ),
   backgroundColor: Colors.blue,
-  expandedHeight: screenHeight * 0.3, // Adjust the height as needed
+  expandedHeight: screenHeight * 0.35, // Adjust the height as needed
   floating: false,
   pinned: true,
   flexibleSpace: FlexibleSpaceBar(
@@ -36,8 +36,8 @@ class HospitalDetailsPage extends StatelessWidget {
         width: 100,
         child: Transform.scale(
           scale: 2.0, // Scale as needed
-          child:Icon(Icons.local_hospital),
-         // child: Lottie.asset('assets/ANIMATION/Animation - 1725512602885.json'),
+         // child:Icon(Icons.local_hospital),
+          child: Lottie.asset('assets/ANIMATION/v89vJ0Lgda.json'),
         ),
       ),
     ),
