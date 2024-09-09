@@ -49,7 +49,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
             children: [
               SizedBox(height: screenHeight * 0.05),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
@@ -66,7 +66,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: const Color.fromARGB(255, 5, 170, 10),
                   ),
                 ),
               ),

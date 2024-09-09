@@ -50,7 +50,7 @@ class _EventsListPagess_adminState extends State<EventsListPagess_admin> {
             children: [
               SizedBox(height: screenHeight * 0.05),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
@@ -63,11 +63,12 @@ class _EventsListPagess_adminState extends State<EventsListPagess_admin> {
                     hintText: 'Search hospitals or locations...',
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    //fillColor: const Color.fromARGB(255, 157, 205, 245),
+                    fillColor: const Color.fromARGB(255, 5, 170, 10)
                   ),
                 ),
               ),
@@ -111,7 +112,7 @@ class _EventsListPagess_adminState extends State<EventsListPagess_admin> {
                               tileColor: Colors.blue,
                               title: Text(
                                 event['Program'].toUpperCase(),
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),
                               ),
                               subtitle: Padding(
                                 padding: EdgeInsets.all(8),
@@ -121,7 +122,7 @@ class _EventsListPagess_adminState extends State<EventsListPagess_admin> {
                                     SizedBox(width: screenWidth * 0.01),
                                     Text(
                                       event['Hospital_name'].toUpperCase(),
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                      style: TextStyle( fontWeight: FontWeight.bold,fontSize: 14,color: Colors.white),
                                     ),
                                   ],
                                 ),

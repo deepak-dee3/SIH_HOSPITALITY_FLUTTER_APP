@@ -25,7 +25,7 @@ class _HospitalListState extends State<HospitalList> {
         children: [
           SizedBox(height: screenHeight * 0.07),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: TextField(
               onChanged: (value) {
                 setState(() {
@@ -34,13 +34,13 @@ class _HospitalListState extends State<HospitalList> {
               },
               decoration: InputDecoration(
                 hintText: 'Search hospitals or locations...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search,),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: const Color.fromARGB(255, 5, 170, 10),
               ),
             ),
           ),
@@ -60,13 +60,14 @@ class _HospitalListState extends State<HospitalList> {
                     final hospitals = snapshot.data!.docs;
 
                     // Filter hospitals based on search query
-                    final filteredHospitals = hospitals.where((doc) {
-                      var hospitalData = doc.data() as Map<String, dynamic>;
-                      var hospitalName = hospitalData['hospital_name']?.toLowerCase() ?? '';
-                      var location = hospitalData['location']?.toLowerCase() ?? '';
-                      return hospitalName.contains(searchQuery) ||
-                          location.contains(searchQuery);
-                    }).toList();
+                   final filteredHospitals = hospitals.where((doc) {
+  var hospitalData = doc.data() as Map<String, dynamic>;
+  var hospitalName = hospitalData['hospital_name']?.toUpperCase() ?? 'No Name';
+  var location = hospitalData['location']?.toUpperCase() ?? 'No Location';
+  var query = searchQuery.toUpperCase();
+  return hospitalName.contains(query) || location.contains(query);
+}).toList();
+
 
                     return ListView.builder(
                       itemCount: filteredHospitals.length,
@@ -101,8 +102,8 @@ class _HospitalListState extends State<HospitalList> {
                                   Icon(Icons.local_hospital, color: const Color.fromARGB(255, 40, 235, 47)),
                                   SizedBox(width: screenWidth * 0.02),
                                   Text(
-                                    hospitalData['hospital_name'] ?? 'No Name',
-                                    style: TextStyle(color: Colors.white),
+                                    hospitalData['hospital_name'].toUpperCase() ?? 'No Name',
+                                    style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -115,8 +116,8 @@ class _HospitalListState extends State<HospitalList> {
                                       //Icon(Icons.location_pin, color: Colors.white70),
                                       SizedBox(width: screenWidth * 0.04),
                                       Text(
-                                        hospitalData['location'] ?? 'No Location',
-                                        style: TextStyle(color: Colors.white70),
+                                        hospitalData['location'].toUpperCase() ?? 'No Location',
+                                        style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),

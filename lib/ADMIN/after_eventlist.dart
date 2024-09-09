@@ -192,15 +192,17 @@ class _EventsListPagesState extends State<EventsListPages> {
           children: [
             SizedBox(height: screenHeight * 0.05),
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(10),
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search by hospital name, program, or date...',
                   prefixIcon: Icon(Icons.search),
+                  fillColor: const Color.fromARGB(255, 5, 170, 10),
+                  filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blueAccent),
+                    borderSide: BorderSide.none,
                   ),
                 ),
               ),
@@ -245,7 +247,7 @@ class _EventsListPagesState extends State<EventsListPages> {
                             tileColor: Colors.blue,
                             title: Text(
                               event['Program'].toUpperCase(),
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),
                             ),
                             subtitle: Padding(
                               padding: EdgeInsets.all(8),
@@ -255,7 +257,7 @@ class _EventsListPagesState extends State<EventsListPages> {
                                   SizedBox(width: screenWidth * 0.01),
                                   Text(
                                     event['Hospital_name'].toUpperCase(),
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14,color: Colors.white),
                                   ),
                                 ],
                               ),

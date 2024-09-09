@@ -57,9 +57,9 @@ class _admin_main_pageState extends State<admin_main_page> {
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
       child:Column(children:[
         SizedBox(height: screenHeight*0.09,),
-        Icon(Icons.arrow_circle_left_outlined,color: Color.fromARGB(255, 3, 194, 9),),
+        Icon(Icons.arrow_circle_left_outlined,color: Color.fromARGB(255, 3, 194, 9),size: 30,),
           SizedBox(height: screenHeight*0.04,),
-        Center(child: Text('Before Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),))])
+        Center(child: Text('Before Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),))])
       ),),
 
       GestureDetector(onTap:(){
@@ -69,9 +69,9 @@ class _admin_main_pageState extends State<admin_main_page> {
         child:
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue), child:Column( children:[
          SizedBox(height: screenHeight*0.09,),
-        Icon(Icons.arrow_circle_right_outlined,color: Color.fromARGB(255, 3, 194, 9),),
+        Icon(Icons.arrow_circle_right_outlined,color: Color.fromARGB(255, 3, 194, 9),size: 30,),
          SizedBox(height: screenHeight*0.04,),
-        Center(child: Text('After Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),))])),),
+        Center(child: Text('After Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),))])),),
 
        GestureDetector(onTap:(){
          Navigator.push(context, MaterialPageRoute(builder: (context) => HospitalList()));
@@ -80,9 +80,9 @@ class _admin_main_pageState extends State<admin_main_page> {
         child:
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue), child: Column(children:[
          SizedBox(height: screenHeight*0.09,),
-        Icon(Icons.local_hospital_outlined,color: Color.fromARGB(255, 3, 194, 9),),
+        Icon(Icons.local_hospital_outlined,color: Color.fromARGB(255, 3, 194, 9),size: 30,),
          SizedBox(height: screenHeight*0.04,),
-        Center(child: Text('Hospital',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),))]))),
+        Center(child: Text('Hospital',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),))]))),
 
 GestureDetector(onTap:(){
   Navigator.push(context, MaterialPageRoute(builder: (context) => before_event()));
@@ -90,9 +90,9 @@ GestureDetector(onTap:(){
   child:
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue), child:Column(children:[ 
          SizedBox(height: screenHeight*0.09,),
-        Icon(Icons.add_circle_outline_outlined,color: Color.fromARGB(255, 3, 194, 9),),
+        Icon(Icons.add_circle_outline_outlined,color: Color.fromARGB(255, 3, 194, 9),size: 30,),
          SizedBox(height: screenHeight*0.04,),
-        Center(child: Text('New Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),))]))),
+        Center(child: Text('New Event',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),))]))),
     ],
   ),
 )
