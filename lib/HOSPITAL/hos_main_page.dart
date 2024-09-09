@@ -4,6 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sih2024/HOSPITAL/after_event.dart';
 import 'package:sih2024/HOSPITAL/before_event.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sih2024/main.dart';
 
 class hos_opening_page extends StatefulWidget{
   @override
@@ -11,9 +12,21 @@ class hos_opening_page extends StatefulWidget{
 }
 
 class _hos_opening_pageState extends State<hos_opening_page> {
+
+  Future<bool> _onWillPop() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()), // Replace MainPage with your actual main page widget
+    );
+    return false; // Prevents the default back button action
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope( onWillPop: _onWillPop,
+      child: 
+     Scaffold(
       backgroundColor: Colors.white,
       body:/*GestureDetector(onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => before_event()));
@@ -76,6 +89,6 @@ class _hos_opening_pageState extends State<hos_opening_page> {
           ]
         ))))
         )
-    ;
+    );
   }
 }

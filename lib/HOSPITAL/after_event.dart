@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sih2024/FIREBASE/firebase_after_event.dart';
+import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 
 class enter_details_hospoital extends StatefulWidget{
   @override
@@ -28,13 +29,24 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
   
 
   final after_formkey = GlobalKey<FormState>();
+
+  Future<bool> _onWillPop() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => hos_opening_page()), // Replace MainPage with your actual main page widget
+    );
+    return false; // Prevents the default back button action
+  }
+
+
   @override
   Widget build(BuildContext context) {
      var screenWidth = MediaQuery.of(context).size.width; 
     var screenHeight = MediaQuery.of(context).size.height;
     
  
-   return Scaffold(
+   return WillPopScope( onWillPop: _onWillPop,child:
+   Scaffold(
     backgroundColor: Colors.white,
 
     body:Padding(padding: EdgeInsets.all(16),
@@ -323,6 +335,12 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
             
 
           );
+           Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => hos_opening_page()),
+        (route) => false,
+      );
+          
 
 
               
@@ -358,6 +376,6 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
       ],)
     ))
     )
-   ))));
+   )))));
   }
 }
