@@ -86,12 +86,12 @@ class _EventsListPagessState extends State<EventsListPagess> {
 
                    final events = snapshot.data!.docs.where((doc) {
   final data = doc.data() as Map<String, dynamic>;
-  final hospitalName = data['Hospital_name'].toLowerCase();
-  final program = data['Program'].toLowerCase();
-  final date = data['Date Of Event'].toLowerCase();
-  final district = data['District'].toLowerCase();
-  final subDistrict = data['Sub_District'].toLowerCase();
-  final state = data['State / Union Territory'].toLowerCase();
+  final hospitalName = data['Hospital_name']?.toLowerCase() ?? 'null';
+  final program = data['Program']?.toLowerCase() ?? 'null';
+  final date = data['Date Of Event']?.toLowerCase() ?? 'null';
+  final district = data['District']?.toLowerCase() ?? 'null';
+  final subDistrict = data['Sub_District']?.toLowerCase() ?? 'null';
+  final state = data['State / Union Territory']?.toLowerCase() ?? 'null';
 
   // Check if the search query matches any of these fields
   return hospitalName.contains(_searchQuery) ||
@@ -111,7 +111,79 @@ class _EventsListPagessState extends State<EventsListPagess> {
                           padding: EdgeInsets.all(16),
                           child: Container(
                             height: 190,
-                            child: ListTile(
+                            child:ListTile(
+  contentPadding: EdgeInsets.all(7),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    side: BorderSide(color: Colors.blueAccent),
+  ),
+  tileColor: Colors.blue,
+  title: Text(
+    event['Program'].toUpperCase(),
+    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    maxLines: 1, // Limit the title to 2 lines
+    overflow: TextOverflow.ellipsis, // Add ellipsis if text overflows
+  ),
+  subtitle: Padding(
+    padding: EdgeInsets.all(8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(Icons.location_pin, color: Colors.green),
+            SizedBox(width: screenWidth * 0.01),
+            Expanded( // Wrap text to prevent overflow
+              child: Text(
+                event['Hospital_name'].toUpperCase(),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis, // Add ellipsis if text overflows
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 5),
+        Text(
+          'District: ${event['District']}'.toUpperCase(),
+          style: TextStyle(fontSize: 13),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          'Sub District: ${event['Sub_District']}'.toUpperCase(),
+          style: TextStyle(fontSize: 13),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          'State: ${event['State / Union Territory']}'.toUpperCase(),
+          style: TextStyle(fontSize: 13),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    ),
+  ),
+  trailing: Text(
+    event['Date Of Event'],
+    style: TextStyle(
+      color: Color.fromARGB(255, 148, 26, 17),
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+    ),
+  ),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetailPages(event: event),
+      ),
+    );
+  },
+),
+
+                             /*ListTile(
                               contentPadding: EdgeInsets.all(7),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -121,6 +193,8 @@ class _EventsListPagessState extends State<EventsListPagess> {
                               title: Text(
                                 event['Program'].toUpperCase(),
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                 maxLines: 2, 
+    overflow: TextOverflow.ellipsis,
                               ),
                               subtitle:/* Padding(
                                 padding: EdgeInsets.all(8),
@@ -152,15 +226,15 @@ class _EventsListPagessState extends State<EventsListPagess> {
       SizedBox(height: 5), // Add some spacing
       Text(
         'District: ${event['District']}'.toUpperCase(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 13),
       ),
       Text(
         'Sub District: ${event['Sub_District']}'.toUpperCase(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 13),
       ),
       Text(
         'State: ${event['State / Union Territory']}'.toUpperCase(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 13),
       ),
     ],
   ),
@@ -182,7 +256,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                                   ),
                                 );
                               },
-                            ),
+                            ),*/
                           ),
                         );
                       },

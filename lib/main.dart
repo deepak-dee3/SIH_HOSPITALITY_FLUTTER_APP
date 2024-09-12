@@ -18,6 +18,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'FIREBASE/abc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async
 {
@@ -32,8 +34,24 @@ class Myapp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:LoginPage(),
-      debugShowCheckedModeBanner: false,
+       debugShowCheckedModeBanner: false,
+      home:AnimatedSplashScreen(nextScreen: LoginPage() ,
+      splash: Center(child: Container(
+            height: 250,
+            width: 100,child:Transform.scale(
+            scale: 3.0, 
+   
+            child:Lottie.asset('assets/ANIMATION/qwrL66dZiT.json'),
+            ),),
+          ),
+      duration: 1500,
+     
+      backgroundColor: Colors.white,
+      pageTransitionType:PageTransitionType.leftToRight,
+     
+     
+    ),
+     
     );   
   }
 }
@@ -378,7 +396,7 @@ Align(
               backgroundColor: Color.fromARGB(255, 10, 132, 232),
               title: Row(children: [
 
-                Shimmer.fromColors( baseColor:Colors.black, highlightColor: Colors.green,child:Icon(Icons.lock,size: 30,),),
+                Shimmer.fromColors( baseColor:Colors.black, highlightColor: Colors.white,child:Icon(Icons.lock,size: 30,),),
                 SizedBox(width: 10,),
                 Text('Secure Key',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
 
@@ -407,7 +425,7 @@ Align(
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Shimmer.fromColors(baseColor: Colors.green, highlightColor: Colors.white,child:Text('Submit',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),),
+                  child: Shimmer.fromColors(baseColor: Colors.black, highlightColor: Colors.white,child:Text('Submit',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),),),
                   onPressed: () {
                     if (passkeyController.text.trim() == passkey) {
                       passkeyController.clear(); // Clear the passkey field
