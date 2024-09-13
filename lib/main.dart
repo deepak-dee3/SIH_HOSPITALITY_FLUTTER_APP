@@ -48,8 +48,6 @@ class Myapp extends StatelessWidget{
      
       backgroundColor: Colors.white,
       pageTransitionType:PageTransitionType.leftToRight,
-     
-     
     ),
      
     );   
@@ -136,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
             style: TextStyle(fontSize: 20))));
   }
 }
-  
   
   @override
   Widget build(BuildContext context) {

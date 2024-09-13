@@ -300,6 +300,35 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
           ),
 
           SizedBox(height: screenHeight*0.04,),
+           Align(
+            alignment: Alignment.centerLeft,
+            child:Text("Upload Program Images :" , style:TextStyle(fontWeight: FontWeight.bold))
+          ),
+          SizedBox(height: screenHeight*0.04,),
+
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(alignment:Alignment.center ,
+            height: screenHeight*0.1,
+            width: screenWidth*0.3,
+           // color: Colors.red,
+           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
+           child: Icon(Icons.upload_rounded),
+            ),
+             Container(alignment:Alignment.center ,
+            height: screenHeight*0.1,
+            width: screenWidth*0.3,
+            child: Icon(Icons.upload_rounded),
+           // color: Colors.red,
+           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
+            )
+          ]),
+
+          SizedBox(height: screenHeight*0.04,),
+
+
 
             GestureDetector(
               onTap:(){
