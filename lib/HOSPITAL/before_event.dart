@@ -159,7 +159,7 @@ Future<void> pickimage() async {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            margin: EdgeInsets.all(10),
+          
             backgroundColor: Colors.red,
             padding: EdgeInsets.all(10),
             content: Text('Uploaded successfully', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
@@ -380,7 +380,7 @@ validator: (value) {
   // Check if the value contains only letters and spaces
   final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
   if (!validSubDistrictRegExp.hasMatch(value)) {
-    return "Only contains a-z *";
+    return "Enter a valid sub district name *";
   }
 
   return null;
