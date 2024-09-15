@@ -320,7 +320,7 @@ Align(
               SizedBox(height: screenHeight*0.04,),
 
             GestureDetector(onTap:(){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => upload_camp_detailss()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => forgetpassword()));
             },
               child:  Align(
                 alignment: Alignment.center,
