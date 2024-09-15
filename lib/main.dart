@@ -8,6 +8,7 @@ import 'package:sih2024/PUBLIC/new.dart';
 import 'package:sih2024/PUBLIC/program_list.dart';
 import 'package:sih2024/sign_up_page.dart';
 import 'package:sih2024/test.dart';
+import 'package:sih2024/test2.dart';
 import 'firebase_options.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/HOSPITAL/after_event.dart';
@@ -319,7 +320,7 @@ Align(
               SizedBox(height: screenHeight*0.04,),
 
             GestureDetector(onTap:(){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => forgetpassword()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => upload_camp_detailss()));
             },
               child:  Align(
                 alignment: Alignment.center,

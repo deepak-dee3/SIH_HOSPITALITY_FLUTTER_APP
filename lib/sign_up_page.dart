@@ -43,6 +43,7 @@ class _sign_upState extends State<sign_up> {
   final storage = FlutterSecureStorage();
 
   registration() async {
+    
     if(password!=null)
     {
       try{
@@ -52,6 +53,9 @@ class _sign_upState extends State<sign_up> {
         //String? storedPassword = await storage.read(key: 'password');
        // await storage.delete(key: 'password');
              create(hos_name,email,head_hos,hos_type,hos_loc,landmark,phone,add_phone);
+             
+             
+             
 
        
        Navigator.pushAndRemoveUntil(
@@ -76,10 +80,11 @@ passcontroller.clear();
         return null;
         }} }
 
-        final ImagePicker _imagePicker = ImagePicker();
+      /*  final ImagePicker _imagePicker = ImagePicker();
+          List<File> _pickedImages = [];
   String? imageUrl;
 
-  Future<void> pickImageAndUpload() async {
+ /* Future<void> pickImageAndUpload() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
@@ -97,9 +102,27 @@ passcontroller.clear();
         );
       }
     }
+  }*/
+  Future<void> pickImageAndAddToList(ImageSource source) async {
+  XFile? image = await _imagePicker.pickImage(source: source);
+  if (image != null) {
+    File imageFile = File(image.path);
+    int fileSize = await imageFile.length();
+    if (fileSize <= 200 * 1024) {
+      setState(() {
+        _pickedImages.add(imageFile);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Please pick an image below 200 KB in size.',
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
   }
+}
 
-   Future<void> pickImageAndUpload_cam() async {
+
+ /*  Future<void> pickImageAndUpload_cam() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
@@ -110,6 +133,7 @@ passcontroller.clear();
       if (fileSize <= 200 * 1024) {
         // Upload the image to Firebase
         uploadToFirebase(imageFile);
+       
       } else {
         Fluttertoast.showToast(
           msg: 'Please pick an image below 200 KB in size.',
@@ -117,7 +141,26 @@ passcontroller.clear();
         );
       }
     }
+  }*/
+  Future<void> pickImageAndAddToList1(ImageSource source) async {
+  XFile? image = await _imagePicker.pickImage(source: source);
+  if (image != null) {
+    File imageFile = File(image.path);
+    int fileSize = await imageFile.length();
+    if (fileSize <= 5000 * 1024) {
+      setState(() {
+        _pickedImages.add(imageFile);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Please pick an image below 200 KB in size.',
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
   }
+}
+
+
   /*Future<void> pickImagesAndUpload() async {
   List<XFile>? images = await _imagePicker.pickMultiImage();
 
@@ -142,7 +185,7 @@ passcontroller.clear();
 
 
 
-  Future<void> uploadToFirebase(File imageFile) async {
+ /* Future<void> uploadToFirebase(File imageFile) async {
     try {
     
       // String hospitalName = after_hos_name_controller.text.trim();
@@ -169,7 +212,143 @@ passcontroller.clear();
     } catch (e) {
       Fluttertoast.showToast(msg: "Error uploading image: $e");
     }
+  }*/
+  Future<void> uploadImagesToFirebase() async {
+  try {
+    
+    for (File imageFile in _pickedImages) {
+    //  String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpeg';
+     String hospitalName = hos_name_controller.text.trim().replaceAll('/', '_');
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('HOSPITAL_IMAGES/$hospitalName');
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+      await storageReference.putFile(imageFile, metadata);
+      String imageUrl = await storageReference.getDownloadURL();
+      print('Image uploaded: $imageUrl');
+    }
+    setState(() {
+      Fluttertoast.showToast(msg: "All images uploaded successfully!");
+    });
+  } catch (e) {
+    Fluttertoast.showToast(msg: "Error uploading images: $e");
   }
+}
+*/
+
+//////////////////////////////////////////
+ String? imageurl;
+  final ImagePicker _imagepic = ImagePicker();
+
+  XFile? _pickedImage;
+
+Future<void> pickimage() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.gallery);
+
+    if (res != null) {
+      setState(() {
+        _pickedImage = res;
+      });
+    }
+  }
+
+ Future<void>pickimage_cam() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.camera);
+
+    if (res != null) {
+      setState(() {
+        _pickedImage = res;
+      });
+    }
+  }
+
+  
+  Future<File> compressImage(XFile image) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFilePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    int minWidth = 900;
+    int minHeight = 900;
+    int quality = 95;
+
+    File compressedFile;
+
+    do {
+      final compressedImageData = await FlutterImageCompress.compressWithFile(
+        image.path,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        quality: quality,
+      );
+
+      if (compressedImageData == null) {
+        throw Exception("Error compressing image");
+      }
+
+      compressedFile = File(tempFilePath)..writeAsBytesSync(compressedImageData);
+
+      // Reduce quality and dimensions incrementally if the size is still greater than 200 KB
+      if (compressedFile.lengthSync() > 200 * 1024) {
+        quality -= 10; // Decrease quality by 10%
+        minWidth = (minWidth * 0.8).round(); // Decrease width by 20%
+        minHeight = (minHeight * 0.8).round(); // Decrease height by 20%
+      }
+    } while (compressedFile.lengthSync() > 200 * 1024 && quality > 10);
+
+    return compressedFile;
+  }
+
+  Future<void> uploadfirebase() async {
+    try {
+      if (_pickedImage == null) {
+        Fluttertoast.showToast(msg: 'Please pick an image');
+        return;
+      }
+
+     
+
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Uploading your image',
+      );
+
+      File compressedFile = await compressImage(_pickedImage!);
+
+      final now = DateTime.now();
+      final contentWithDate = "${hos_name_controller.text}";
+
+      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_IMAGES/$contentWithDate.jpg');
+
+      SettableMetadata metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+      );
+
+      await image_ref.putFile(compressedFile, metadata).whenComplete(() async {
+        imageurl = await image_ref.getDownloadURL();
+        hos_name_controller.clear();
+
+        registration();
+        
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            padding: EdgeInsets.all(10),
+            content: Text('Uploaded successfully', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      });
+    } catch (e) {
+      print('Error uploading image: $e');
+      Fluttertoast.showToast(msg: 'Error uploading image: $e');
+    }
+  }
+
+
   
 
 
@@ -243,7 +422,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter your user email";
+                      return "Enter your email *";
                     }
                     
                    
@@ -301,7 +480,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter your user password";
+                      return "Enter your user password *";
                     }
                     
                    
@@ -358,7 +537,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter hospital name * ";
+                      return "Enter your hospital name * ";
                     }
                     
                    
@@ -414,7 +593,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter hospital type ";
+                      return "Enter your hospital type *";
                     }
                     
                    
@@ -471,7 +650,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter name";
+                      return "Enter name of the head *";
                     }
                     
                    
@@ -529,7 +708,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter your location";
+                      return "Enter hospital location *";
                     }
                     
                    
@@ -586,7 +765,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter your landmark";
+                      return "Enter hospital's landmark *";
                     }
                     
                    
@@ -643,7 +822,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter hospital number ";
+                      return "Enter hospital number * ";
                     }
                     
                    
@@ -700,7 +879,7 @@ passcontroller.clear();
                 validator: (value){
                     if(value == null || value.isEmpty)
                     {
-                      return "Enter additional number";
+                      return "Enter hospital additional number *";
                     }
                     
                    
@@ -736,7 +915,9 @@ passcontroller.clear();
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: pickImageAndUpload_cam,
+              onTap: (){
+               pickimage_cam();
+              },
               child: Column(
                 children: [
                   Container(
@@ -771,7 +952,8 @@ passcontroller.clear();
           SizedBox(width: MediaQuery.of(context).size.width * 0.1),
           Expanded(
             child: GestureDetector(
-              onTap: pickImageAndUpload
+              onTap:(){ pickimage();
+              }
                
               ,
               child: Column(
@@ -862,8 +1044,9 @@ passcontroller.clear();
 
             });
           }
+          
 
-          registration();
+          uploadfirebase();
          
               },child:Container(alignment: Alignment.center,
       height:  screenHeight * 0.18,
