@@ -37,92 +37,149 @@ class before_event_pageState extends State<before_event> {
 
   final before_formkey = GlobalKey<FormState>();
 
-   final ImagePicker _imagePicker = ImagePicker();
-  String? imageUrl;
-
-  Future<void> pickImageAndUpload() async {
-    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      File imageFile = File(image.path);
-
-      // Optionally, compress the image
-      int fileSize = await imageFile.length();
-      if (fileSize <= 200 * 1024) {
-        // Upload the image to Firebase
-        uploadToFirebase(imageFile);
-      } else {
-        Fluttertoast.showToast(
-          msg: 'Please pick an image below 200 KB in size.',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    }
-  }
-
-   Future<void> pickImageAndUpload_cam() async {
-    XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
-
-    if (image != null) {
-      File imageFile = File(image.path);
-
-      // Optionally, compress the image
-      int fileSize = await imageFile.length();
-      if (fileSize <= 5000 * 1024) {
-        // Upload the image to Firebase
-        uploadToFirebase(imageFile);
-      } else {
-        Fluttertoast.showToast(
-          msg: 'Please pick an image below 200 KB in size.',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    }
-  }
  
+  String? imageurl;
+  final ImagePicker _imagepic = ImagePicker();
+ // TextEditingController _campeve_controller = TextEditingController();
 
- 
+  XFile? _pickedImage;
 
+Future<void> pickimage() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.gallery);
 
-  Future<void> uploadToFirebase(File imageFile) async {
-    try {
-    
-      // String hospitalName = after_hos_name_controller.text.trim();
-       //String date = after_date_controller.text.trim();
-       String hospitalName = before_hos_name_controller.text.trim().replaceAll('/', '_');
-String date = before_date_contoller.text.trim().replaceAll('/', '_');
-String programName = before_program_name_contoller.text.trim().replaceAll('/', '_');
- 
-
-   
-      // Specify the file name and format as .jpeg
-      Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('HOSPITAL_BEFORE_PREMIT_PROOF/${hospitalName}_${date}_${programName}.jpeg');
-
-      // Use settable metadata to explicitly mention the MIME type (optional)
-      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
-      
-      await storageReference.putFile(imageFile, metadata);
-      imageUrl = await storageReference.getDownloadURL();
-
+    if (res != null) {
       setState(() {
-        Fluttertoast.showToast(msg: "Image uploaded successfully!");
+        _pickedImage = res;
+      });
+    }
+  }
+
+ Future<void>pickimage_cam() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.camera);
+
+    if (res != null) {
+      setState(() {
+        _pickedImage = res;
+      });
+    }
+  }
+
+ 
+  Future<File> compressImage(XFile image) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFilePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    int minWidth = 900;
+    int minHeight = 900;
+    int quality = 95;
+
+    File compressedFile;
+
+    do {
+      final compressedImageData = await FlutterImageCompress.compressWithFile(
+        image.path,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        quality: quality,
+      );
+
+      if (compressedImageData == null) {
+        throw Exception("Error compressing image");
+      }
+
+      compressedFile = File(tempFilePath)..writeAsBytesSync(compressedImageData);
+
+      // Reduce quality and dimensions incrementally if the size is still greater than 200 KB
+      if (compressedFile.lengthSync() > 200 * 1024) {
+        quality -= 10; // Decrease quality by 10%
+        minWidth = (minWidth * 0.8).round(); // Decrease width by 20%
+        minHeight = (minHeight * 0.8).round(); // Decrease height by 20%
+      }
+    } while (compressedFile.lengthSync() > 200 * 1024 && quality > 10);
+
+    return compressedFile;
+  }
+
+  Future<void> uploadfirebase() async {
+    try {
+      if (_pickedImage == null) {
+        Fluttertoast.showToast(msg: 'Please pick an image');
+        return;
+      }
+        if(before_formkey.currentState!.validate())
+          {
+            
+            setState(() {
+             
+             before_hos_name = before_hos_name_controller.text.trim();
+             before_program_name = before_program_name_contoller.text.trim();
+             before_place = before_place_controller.text.trim();
+             before_date = before_date_contoller.text.trim();
+             before_availability = before_availability_controller.text.trim();
+             before_sd = before_sub_dis_controller.text.trim();
+             before_dis = before_dis_contoller.text.trim();
+             before_state = before_state_or_union_controller.text.trim();
+
+            });
+          }
+           
+
+          create(
+            before_hos_name ,
+             before_program_name ,
+             before_place,
+             before_date ,
+             before_availability ,
+             before_sd,
+             before_dis,
+             before_state,
+
+          );
+         
+
+
+      
+
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Submitting Data...',
+      );
+
+      File compressedFile = await compressImage(_pickedImage!);
+
+      final now = DateTime.now();
+     // final formattedDate = "${now.day}-${now.month}-${now.year} ${now.hour}:${now.minute}:${now.second}";
+      final hos_name = "${before_hos_name_controller.text}_${before_program_name_contoller.text}_${before_date_contoller.text}";
+       
+
+      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_BEFORE_EVENT_IMAGES/$hos_name.jpg');
+
+      SettableMetadata metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+      );
+
+      await image_ref.putFile(compressedFile, metadata).whenComplete(() async {
+        imageurl = await image_ref.getDownloadURL();
+        before_hos_name_controller.clear();
+        
+        Navigator.push(context, MaterialPageRoute(builder: (context) => hos_opening_page()));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            padding: EdgeInsets.all(10),
+            content: Text('Uploaded successfully', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            duration: Duration(seconds: 2),
+          ),
+        );
       });
     } catch (e) {
-      Fluttertoast.showToast(msg: "Error uploading image: $e");
+      print('Error uploading image: $e');
+      Fluttertoast.showToast(msg: 'Error uploading image: $e');
     }
   }
- 
-
-
-
-  
-
-  
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +215,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_hos_name_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the name of the hospital *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : abc_hospital',
@@ -179,6 +246,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_program_name_contoller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the name of the program *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Eye donation',
@@ -200,6 +277,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_place_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the place of the hospital *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Agra',
@@ -220,6 +307,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_date_contoller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the date will be conduct *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : 01/01/2024',
@@ -241,6 +338,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_availability_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the No.of vaccancies alloted for the program *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : 500',
@@ -262,6 +369,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_sub_dis_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the sub district *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Perundurai',
@@ -283,6 +400,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_dis_contoller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the district *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Erode',
@@ -304,6 +431,16 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_state_or_union_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the state / union territory *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : TamilNadu / Puducherry',
@@ -329,7 +466,9 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: pickImageAndUpload_cam,
+              onTap: (){
+                pickimage_cam();
+              },
               child: Column(
                 children: [
                   Container(
@@ -363,7 +502,9 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
           SizedBox(width: MediaQuery.of(context).size.width * 0.1),
           Expanded(
             child: GestureDetector(
-              onTap: pickImageAndUpload
+              onTap: (){
+                pickimage();
+              }
                
               ,
               child: Column(
@@ -409,44 +550,17 @@ String programName = before_program_name_contoller.text.trim().replaceAll('/', '
 
             GestureDetector(
               onTap:(){
+                uploadfirebase();
 
 
-                  if(before_formkey.currentState!.validate())
-          {
-            
-            setState(() {
-             
-             before_hos_name = before_hos_name_controller.text.trim();
-             before_program_name = before_program_name_contoller.text.trim();
-             before_place = before_place_controller.text.trim();
-             before_date = before_date_contoller.text.trim();
-             before_availability = before_availability_controller.text.trim();
-             before_sd = before_sub_dis_controller.text.trim();
-             before_dis = before_dis_contoller.text.trim();
-             before_state = before_state_or_union_controller.text.trim();
-
-            });
-          }
-
-          create(
-            before_hos_name ,
-             before_program_name ,
-             before_place,
-             before_date ,
-             before_availability ,
-             before_sd,
-             before_dis,
-             before_state,
-
-          );
-
+                
          
 
-           Navigator.pushAndRemoveUntil(
+         /*  Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => hos_opening_page()),
         (route) => false,
-      );
+      );*/
 
          
 

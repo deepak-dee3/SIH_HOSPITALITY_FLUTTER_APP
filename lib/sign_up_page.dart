@@ -990,40 +990,6 @@ Future<void> pickimage() async {
   ),
 ),
 
-
-             /*  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-             /* GestureDetector(
-                onTap:pickImageAndUpload,
-                child: Container(alignment:Alignment.center ,
-            height: screenHeight*0.1,
-            width: screenWidth*0.3,
-           // color: Colors.red,
-           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
-           child: Icon(Icons.upload_rounded),
-            )),*/
-            GestureDetector(onTap:pickImageAndUpload,
-              child:
-             Container(alignment:Alignment.center ,
-            height: screenHeight*0.2,
-            width: screenWidth*0.3,
-            child:Row( 
-              children: [
-                SizedBox(width: screenWidth*0.04,),
-                
-              
-              Icon(Icons.upload_rounded),
-
-              Text('Hospital Image',style: TextStyle(fontWeight: FontWeight.bold),)
-              ]),
-           // color: Colors.red,
-           decoration: BoxDecoration(borderRadius: BorderRadius.circular(40),color: Colors.blue),
-            ))
-          ]),*/
-          
-
-
               SizedBox(height: screenHeight*0.04,),
 
                GestureDetector(

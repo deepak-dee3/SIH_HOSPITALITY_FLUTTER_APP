@@ -39,7 +39,7 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
 
    String after_hos_name =' ',after_type=' ',after_program_name =' ',after_place=' ',after_date=' ',
    after_no_parti=' ',after_hours=' ',after_feedback=' ';
-    String imageurl = ' ';
+    
  
 
   TextEditingController after_hos_name_controller = TextEditingController();
@@ -63,107 +63,149 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
     );
     return false; // Prevents the default back button action
   }
-   final ImagePicker _imagePicker = ImagePicker();
-  String? imageUrl;
+  
+ String? imageurl;
+  final ImagePicker _imagepic = ImagePicker();
+ // TextEditingController _campeve_controller = TextEditingController();
 
-  Future<void> pickImageAndUpload() async {
-    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+  XFile? _pickedImage;
 
-    if (image != null) {
-      File imageFile = File(image.path);
+Future<void> pickimage() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.gallery);
 
-      // Optionally, compress the image
-      int fileSize = await imageFile.length();
-      if (fileSize <= 200 * 1024) {
-        // Upload the image to Firebase
-        uploadToFirebase(imageFile);
-      } else {
-        Fluttertoast.showToast(
-          msg: 'Please pick an image below 200 KB in size.',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    }
-  }
-  /*Future<void> pickImagesAndUpload() async {
-  List<XFile>? images = await _imagePicker.pickMultiImage();
-
-  if (images != null && images.isNotEmpty) {
-    for (XFile image in images) {
-      File imageFile = File(image.path);
-
-      // Optionally, compress the image
-      int fileSize = await imageFile.length();
-      if (fileSize <= 200 * 1024) {
-        // Upload the image to Firebase
-        await uploadToFirebase(imageFile);
-      } else {
-        Fluttertoast.showToast(
-          msg: 'Please pick an image below 200 KB in size.',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    }
-  }
-}*/
-
-
-
-  Future<void> uploadToFirebase(File imageFile) async {
-    try {
-    
-      // String hospitalName = after_hos_name_controller.text.trim();
-       //String date = after_date_controller.text.trim();
-       String hospitalName = after_hos_name_controller.text.trim().replaceAll('/', '_');
-String date = after_date_controller.text.trim().replaceAll('/', '_');
-String programName = after_program_name_contoller.text.trim().replaceAll('/', '_');
- 
-
-   
-      // Specify the file name and format as .jpeg
-      Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('HOSPITAL_AFTER_EVENT_IMAGES/${hospitalName}_${date}_${programName}.jpeg');
-
-      // Use settable metadata to explicitly mention the MIME type (optional)
-      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
-      
-      await storageReference.putFile(imageFile, metadata);
-      imageUrl = await storageReference.getDownloadURL();
-
+    if (res != null) {
       setState(() {
-        Fluttertoast.showToast(msg: "Image uploaded successfully!");
+        _pickedImage = res;
+      });
+    }
+  }
+
+ Future<void>pickimage_cam() async {
+    XFile? res = await _imagepic.pickImage(source: ImageSource.camera);
+
+    if (res != null) {
+      setState(() {
+        _pickedImage = res;
+      });
+    }
+  }
+
+ 
+  Future<File> compressImage(XFile image) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempFilePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    int minWidth = 900;
+    int minHeight = 900;
+    int quality = 95;
+
+    File compressedFile;
+
+    do {
+      final compressedImageData = await FlutterImageCompress.compressWithFile(
+        image.path,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        quality: quality,
+      );
+
+      if (compressedImageData == null) {
+        throw Exception("Error compressing image");
+      }
+
+      compressedFile = File(tempFilePath)..writeAsBytesSync(compressedImageData);
+
+      // Reduce quality and dimensions incrementally if the size is still greater than 200 KB
+      if (compressedFile.lengthSync() > 200 * 1024) {
+        quality -= 10; // Decrease quality by 10%
+        minWidth = (minWidth * 0.8).round(); // Decrease width by 20%
+        minHeight = (minHeight * 0.8).round(); // Decrease height by 20%
+      }
+    } while (compressedFile.lengthSync() > 200 * 1024 && quality > 10);
+
+    return compressedFile;
+  }
+
+  Future<void> uploadfirebase() async {
+    try {
+      if (_pickedImage == null) {
+        Fluttertoast.showToast(msg: 'Please pick an image');
+        return;
+      }
+       if(after_formkey.currentState!.validate())
+          {
+            setState(() {
+             
+             after_hos_name = after_hos_name_controller.text.trim();
+             after_program_name = after_program_name_contoller.text.trim();
+             after_place = after_place_controller.text.trim();
+             after_date = after_date_controller.text.trim();
+             after_type = after_type_controller.text.trim();
+
+              after_no_parti = after_no_parti_controller.text.trim();
+             after_hours = after_hours_controller.text.trim();
+             after_feedback = after_feedback_controller.text.trim();
+           
+            });
+          }
+
+          create_after(
+             after_hos_name ,
+             after_program_name ,
+             after_place ,
+             after_date ,
+             after_type ,
+             after_no_parti ,
+             after_hours  ,
+             after_feedback ,
+            
+
+          );
+
+      
+
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.loading,
+        title: 'Loading',
+        text: 'Submitting Data...',
+      );
+
+      File compressedFile = await compressImage(_pickedImage!);
+
+      final now = DateTime.now();
+     // final formattedDate = "${now.day}-${now.month}-${now.year} ${now.hour}:${now.minute}:${now.second}";
+      final hos_name = "${after_hos_name_controller.text}_${after_program_name_contoller.text}_${after_date_controller.text}";
+       final program_name = "${after_program_name_contoller.text}";
+        final date = "${after_date_controller.text}";
+
+      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_AFTER_EVENT_IMAGES/$hos_name.jpg');
+
+      SettableMetadata metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+      );
+
+      await image_ref.putFile(compressedFile, metadata).whenComplete(() async {
+        imageurl = await image_ref.getDownloadURL();
+        after_hos_name_controller.clear();
+        
+        Navigator.push(context, MaterialPageRoute(builder: (context) => hos_opening_page()));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            padding: EdgeInsets.all(10),
+            content: Text('Uploaded successfully', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            duration: Duration(seconds: 2),
+          ),
+        );
       });
     } catch (e) {
-      Fluttertoast.showToast(msg: "Error uploading image: $e");
+      print('Error uploading image: $e');
+      Fluttertoast.showToast(msg: 'Error uploading image: $e');
     }
   }
-  /*
-  Future<void> uploadToFirebase(File imageFile) async {
-  try {
-    String hospitalName = after_hos_name_controller.text.trim().replaceAll('/', '_');
-    String date = after_date_controller.text.trim().replaceAll('/', '_');
-    String programName = after_program_name_contoller.text.trim().replaceAll('/', '_');
 
-    // Create a unique file name for each image
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('HOSPITAL_AFTER_EVENT_IMAGES/${hospitalName}_${date}_${programName}_$fileName.jpeg');
-
-    // Use settable metadata to explicitly mention the MIME type (optional)
-    SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
-    
-    await storageReference.putFile(imageFile, metadata);
-    imageUrl = await storageReference.getDownloadURL();
-
-    setState(() {
-      Fluttertoast.showToast(msg: "Image uploaded successfully!");
-    });
-  } catch (e) {
-    Fluttertoast.showToast(msg: "Error uploading image: $e");
-  }
-}*/
 
 
   
@@ -217,6 +259,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
           child:TextFormField(
             controller: after_hos_name_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the name of the hospital *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
             cursorColor: Colors.black,
 
             decoration: InputDecoration(
@@ -234,6 +286,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
           child:TextFormField(
             controller: after_date_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the date program been happened *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
             cursorColor: Colors.black,
 
             decoration: InputDecoration(
@@ -253,6 +315,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_place_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the location of your hospital *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Agra',
@@ -270,6 +342,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_type_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the type of your hospital *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'eg : Primary , Multispeciality',
@@ -283,81 +365,6 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           ),
            SizedBox(height: screenHeight*0.04,),
 
-
-         /*  Align(
-            alignment: Alignment.centerLeft,
-            child:Text("Treatments and Diagnosis :" , style:TextStyle(fontWeight: FontWeight.bold))
-          ),
-          SizedBox(height: screenHeight*0.03,),
-
-          Container(height: screenHeight*0.08,width: screenWidth*0.8,
-          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
-          child:TextFormField(
-            cursorColor: Colors.black,
-
-            decoration: InputDecoration(
-              hintText: 'No. Of Diagnosis (surgeries , therapies)',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left:10,top: 13),
-              
-              
-            ),
-
-          )
-          ),
-
-          SizedBox(height: screenHeight*0.02,),
-          Container(height: screenHeight*0.08,width: screenWidth*0.8,
-          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
-          child:TextFormField(
-            cursorColor: Colors.black,
-
-            decoration: InputDecoration(
-              hintText: 'Common Diagnosis',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left:10,top: 13),
-              
-              
-            ),
-
-          )
-          ),
-          SizedBox(height: screenHeight*0.02,),
-          Container(height: screenHeight*0.08,width: screenWidth*0.8,
-          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
-          child:TextFormField(
-            cursorColor: Colors.black,
-
-            decoration: InputDecoration(
-              hintText: 'No. Of Newly Admitted',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left:10,top: 13),
-              
-              
-            ),
-
-          )
-          ),
-          SizedBox(height: screenHeight*0.02,),
-          Container(height: screenHeight*0.08,width: screenWidth*0.8,
-          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
-          child:TextFormField(
-            cursorColor: Colors.black,
-
-            decoration: InputDecoration(
-              hintText: 'No. Of Discharged',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left:10,top: 13),
-              
-              
-            ),
-
-          )
-          ),
-           SizedBox(height: screenHeight*0.04,),*/
-
-           
-
           Align(
             alignment: Alignment.centerLeft,
             child:Text("Health Program Participation :" , style:TextStyle(fontWeight: FontWeight.bold))
@@ -368,6 +375,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_program_name_contoller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the program name *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'Name of the program',
@@ -386,6 +403,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_no_parti_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter No. of participants attended *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'No. Of Participant in program',
@@ -403,6 +430,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_hours_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter No.of hours taken *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'No. Of hours taken',
@@ -420,6 +457,16 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_feedback_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter feedback about the program *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
 
             decoration: InputDecoration(
               hintText: 'Feedback of program',
@@ -452,7 +499,7 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
            child: Icon(Icons.upload_rounded),
             )),*/
-            GestureDetector(onTap:pickImageAndUpload,
+            GestureDetector(onTap:pickimage,
               child:
              Container(alignment:Alignment.center ,
             height: screenHeight*0.1,
@@ -472,40 +519,9 @@ String programName = after_program_name_contoller.text.trim().replaceAll('/', '_
                 
 
 
-                  if(after_formkey.currentState!.validate())
-          {
-            setState(() {
-             
-             after_hos_name = after_hos_name_controller.text.trim();
-             after_program_name = after_program_name_contoller.text.trim();
-             after_place = after_place_controller.text.trim();
-             after_date = after_date_controller.text.trim();
-             after_type = after_type_controller.text.trim();
-
-              after_no_parti = after_no_parti_controller.text.trim();
-             after_hours = after_hours_controller.text.trim();
-             after_feedback = after_feedback_controller.text.trim();
+                 
            
-            });
-          }
-
-          create_after(
-             after_hos_name ,
-             after_program_name ,
-             after_place ,
-             after_date ,
-             after_type ,
-             after_no_parti ,
-             after_hours  ,
-             after_feedback ,
-            
-
-          );
-           Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => hos_opening_page()),
-        (route) => false,
-      );
+      uploadfirebase();
           
 
 
