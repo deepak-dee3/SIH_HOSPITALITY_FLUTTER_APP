@@ -67,6 +67,12 @@ class _sign_upState extends State<sign_up> {
 emailcontroller.clear();
 hos_name_controller.clear();
 passcontroller.clear();
+hos_loc_controller.clear();
+head_hos_controller.clear();
+hos_type_controller.clear();
+phonecontroller.clear();
+add_phone_controller.clear();
+landmark_controller.clear();
        
 
       }on FirebaseAuthException catch (e)
@@ -300,10 +306,17 @@ Future<void> pickimage() async {
 
   Future<void> uploadfirebase() async {
     try {
-      if (_pickedImage == null) {
+       if(emailcontroller.text.isEmpty || passcontroller.text.isEmpty || hos_loc_controller.text.isEmpty || hos_name_controller.text.isEmpty || hos_type_controller.text.isEmpty || head_hos_controller.text.isEmpty || phonecontroller.text.isEmpty || landmark_controller.text.isEmpty || add_phone_controller.text.isEmpty )
+      {
+          Fluttertoast.showToast(msg: 'Please fill all the details');
+        return;
+
+      }
+       if (_pickedImage == null) {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
+     
 
      
 
@@ -311,7 +324,7 @@ Future<void> pickimage() async {
         context: context,
         type: QuickAlertType.loading,
         title: 'Loading',
-        text: 'Uploading your image',
+        text: 'Signing In',
       );
 
       File compressedFile = await compressImage(_pickedImage!);
@@ -347,16 +360,6 @@ Future<void> pickimage() async {
       Fluttertoast.showToast(msg: 'Error uploading image: $e');
     }
   }
-
-
-  
-
-
-  
-
-  
-
-
 
 
 
@@ -419,16 +422,14 @@ Future<void> pickimage() async {
                     TextFormField(
                     // controller: login_emailcontroller,
                     controller: emailcontroller,
-                validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter your email *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter your email *";
+  } else if (!value.endsWith('@gmail.com')) {
+    return "Email should end with @gmail.com";
+  }
+  return null;
+},
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,
@@ -477,16 +478,21 @@ Future<void> pickimage() async {
                     TextFormField(
                    //  controller: login_emailcontroller,
                    controller: passcontroller,
-                validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter your user password *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter your user password *";
+  } else if (value.length < 8) {
+    return "Password at least 8 characters long";
+  } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+    return "Password at least one uppercase letter";
+  } else if (!RegExp(r'(?=.*[0-9])').hasMatch(value)) {
+    return "Password at least one number";
+  } else if (!RegExp(r'(?=.*[!@#\$%^&*()_+\-=\[\]{};:"\\|,.<>\/?])').hasMatch(value)) {
+    return "Password at least one special character";
+  }
+  return null;
+}
+,
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,
@@ -705,16 +711,22 @@ Future<void> pickimage() async {
                     ),
                     TextFormField(
                     controller: hos_loc_controller,
-                validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter hospital location *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the location with pincode *";
+  }
+
+  // Regular expression to ensure pincode is at the end of the string
+  final regex = RegExp(r'.*\b\d{6}\b$');
+
+  if (!regex.hasMatch(value)) {
+    return "Location must end with a 6-digit pincode";
+  }
+
+  return null;
+}
+
+,
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,
@@ -819,16 +831,22 @@ Future<void> pickimage() async {
                     ),
                     TextFormField(
                     controller: phonecontroller,
-                validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter hospital number * ";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+                    keyboardType: TextInputType.number,
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter hospital number *";
+  }
+
+  // Regular expression to match exactly 10 digits
+  //final regex = RegExp(r'^\d{10}$');
+
+  else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+    return "Hospital number must be exactly 10 digits";
+  }
+
+  return null;
+}
+,
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,
@@ -876,16 +894,22 @@ Future<void> pickimage() async {
                     ),
                     TextFormField(
                   controller:add_phone_controller,
-                validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter hospital additional number *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+                  keyboardType: TextInputType.number,
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter hospital number *";
+  }
+
+  // Regular expression to match exactly 10 digits
+  final regex = RegExp(r'^\d{10}$');
+
+  if (!regex.hasMatch(value)) {
+    return "Hospital number must be exactly 10 digits";
+  }
+
+  return null;
+}
+,
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,

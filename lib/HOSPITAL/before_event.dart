@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 class before_event extends StatefulWidget{
   @override
@@ -106,23 +107,13 @@ Future<void> pickimage() async {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
-        if(before_formkey.currentState!.validate())
-          {
-            
-            setState(() {
-             
-             before_hos_name = before_hos_name_controller.text.trim();
-             before_program_name = before_program_name_contoller.text.trim();
-             before_place = before_place_controller.text.trim();
-             before_date = before_date_contoller.text.trim();
-             before_availability = before_availability_controller.text.trim();
-             before_sd = before_sub_dis_controller.text.trim();
-             before_dis = before_dis_contoller.text.trim();
-             before_state = before_state_or_union_controller.text.trim();
+      if(before_availability_controller.text.isEmpty || before_date_contoller.text.isEmpty || before_dis_contoller.text.isEmpty || before_hos_name_controller.text.isEmpty || before_place_controller.text.isEmpty || before_program_name_contoller.text.isEmpty || before_state_or_union_controller.text.isEmpty || before_sub_dis_controller.text.isEmpty)
+      {
+         Fluttertoast.showToast(msg: 'Please fill all the details');
+        return;
 
-            });
-          }
-           
+      }
+        
 
           create(
             before_hos_name ,
@@ -168,6 +159,7 @@ Future<void> pickimage() async {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            margin: EdgeInsets.all(10),
             backgroundColor: Colors.red,
             padding: EdgeInsets.all(10),
             content: Text('Uploaded successfully', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
@@ -307,16 +299,26 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_date_contoller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter the date will be conduct *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+           
+
+validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the date that will be conducted *";
+  }
+
+  // Define the date format
+  final DateFormat format = DateFormat('dd/MM/yyyy');
+
+  // Try to parse the value to a date
+  try {
+    format.parseStrict(value);
+  } catch (e) {
+    return "Enter a valid date (format: dd/MM/yyyy) *";
+  }
+
+  return null;
+},
+
 
             decoration: InputDecoration(
               hintText: 'eg : 01/01/2024',
@@ -338,6 +340,7 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_availability_controller,
+           keyboardType: TextInputType.number,
              validator: (value){
                     if(value == null || value.isEmpty)
                     {
@@ -369,16 +372,20 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_sub_dis_controller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter the sub district *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+             validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the sub district *";
+  }
+
+  // Check if the value contains only letters and spaces
+  final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
+  if (!validSubDistrictRegExp.hasMatch(value)) {
+    return "Only contains a-z *";
+  }
+
+  return null;
+},
+
 
             decoration: InputDecoration(
               hintText: 'eg : Perundurai',
@@ -400,16 +407,20 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_dis_contoller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter the district *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+            validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the district *";
+  }
+
+  // Check if the value contains only letters and spaces
+  final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
+  if (!validSubDistrictRegExp.hasMatch(value)) {
+    return "Only contains a-z*";
+  }
+
+  return null;
+},
+
 
             decoration: InputDecoration(
               hintText: 'eg : Erode',
@@ -431,16 +442,20 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: before_state_or_union_controller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter the state / union territory *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+             validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the state / union territory name *";
+  }
+
+  // Check if the value contains only letters and spaces
+  final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
+  if (!validSubDistrictRegExp.hasMatch(value)) {
+    return "Only contains a-z *";
+  }
+
+  return null;
+},
+
 
             decoration: InputDecoration(
               hintText: 'eg : TamilNadu / Puducherry',
@@ -550,6 +565,24 @@ Future<void> pickimage() async {
 
             GestureDetector(
               onTap:(){
+
+                if(before_formkey.currentState!.validate())
+          {
+            
+            setState(() {
+             
+             before_hos_name = before_hos_name_controller.text.trim();
+             before_program_name = before_program_name_contoller.text.trim();
+             before_place = before_place_controller.text.trim();
+             before_date = before_date_contoller.text.trim();
+             before_availability = before_availability_controller.text.trim();
+             before_sd = before_sub_dis_controller.text.trim();
+             before_dis = before_dis_contoller.text.trim();
+             before_state = before_state_or_union_controller.text.trim();
+
+            });
+          }
+           
                 uploadfirebase();
 
 

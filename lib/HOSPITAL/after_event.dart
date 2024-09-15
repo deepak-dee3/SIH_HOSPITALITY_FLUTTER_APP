@@ -128,26 +128,18 @@ Future<void> pickimage() async {
 
   Future<void> uploadfirebase() async {
     try {
-      if (_pickedImage == null) {
+       if (after_date_controller.text.isEmpty || after_feedback_controller.text.isEmpty || after_hos_name_controller.text.isEmpty || after_hours_controller.text.isEmpty || after_no_parti_controller.text.isEmpty || after_place_controller.text.isEmpty || after_program_name_contoller.text.isEmpty || after_type_controller.text.isEmpty ) {
+        Fluttertoast.showToast(msg: 'Please fill all the details');
+        return;
+      }
+       if (_pickedImage == null) {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
-       if(after_formkey.currentState!.validate())
-          {
-            setState(() {
-             
-             after_hos_name = after_hos_name_controller.text.trim();
-             after_program_name = after_program_name_contoller.text.trim();
-             after_place = after_place_controller.text.trim();
-             after_date = after_date_controller.text.trim();
-             after_type = after_type_controller.text.trim();
-
-              after_no_parti = after_no_parti_controller.text.trim();
-             after_hours = after_hours_controller.text.trim();
-             after_feedback = after_feedback_controller.text.trim();
-           
-            });
-          }
+     
+     
+      
+       
 
           create_after(
              after_hos_name ,
@@ -342,16 +334,20 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_type_controller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter the type of your hospital *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+             validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the type of your hospital *";
+  }
+
+  // Check if the value contains only letters and spaces
+  final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
+  if (!validSubDistrictRegExp.hasMatch(value)) {
+    return "Enter valid type of your hospital *";
+  }
+
+  return null;
+},
+
 
             decoration: InputDecoration(
               hintText: 'eg : Primary , Multispeciality',
@@ -403,6 +399,7 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_no_parti_controller,
+            keyboardType: TextInputType.number,
              validator: (value){
                     if(value == null || value.isEmpty)
                     {
@@ -430,6 +427,7 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_hours_controller,
+            keyboardType: TextInputType.number,
              validator: (value){
                     if(value == null || value.isEmpty)
                     {
@@ -457,16 +455,19 @@ Future<void> pickimage() async {
           child:TextFormField(
             cursorColor: Colors.black,
             controller: after_feedback_controller,
-             validator: (value){
-                    if(value == null || value.isEmpty)
-                    {
-                      return "Enter feedback about the program *";
-                    }
-                    
-                   
-                   
-                    return null;
-                  },
+               validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter the feedback about the program *";
+  }
+
+  // Check if the value contains only letters and spaces
+  final validSubDistrictRegExp = RegExp(r'^[a-zA-Z\s]+$');
+  if (!validSubDistrictRegExp.hasMatch(value)) {
+    return "Does not contain numbers *";
+  }
+
+  return null;
+},
 
             decoration: InputDecoration(
               hintText: 'Feedback of program',
@@ -516,6 +517,24 @@ Future<void> pickimage() async {
 
             GestureDetector(
               onTap:(){
+
+                if(after_formkey.currentState!.validate())
+          {
+            setState(() {
+             
+             after_hos_name = after_hos_name_controller.text.trim();
+             after_program_name = after_program_name_contoller.text.trim();
+             after_place = after_place_controller.text.trim();
+             after_date = after_date_controller.text.trim();
+             after_type = after_type_controller.text.trim();
+
+              after_no_parti = after_no_parti_controller.text.trim();
+             after_hours = after_hours_controller.text.trim();
+             after_feedback = after_feedback_controller.text.trim();
+           
+            });
+          }
+         
                 
 
 
