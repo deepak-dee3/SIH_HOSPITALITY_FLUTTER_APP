@@ -9,6 +9,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sih2024/FIREBASE/firebase_imp.dart';
 import 'package:sih2024/main.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
+
 
 
 class sign_up extends StatefulWidget{
@@ -67,6 +75,109 @@ passcontroller.clear();
         }*/
         return null;
         }} }
+
+        final ImagePicker _imagePicker = ImagePicker();
+  String? imageUrl;
+
+  Future<void> pickImageAndUpload() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+
+   Future<void> pickImageAndUpload_cam() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+  /*Future<void> pickImagesAndUpload() async {
+  List<XFile>? images = await _imagePicker.pickMultiImage();
+
+  if (images != null && images.isNotEmpty) {
+    for (XFile image in images) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        await uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+}*/
+
+
+
+  Future<void> uploadToFirebase(File imageFile) async {
+    try {
+    
+      // String hospitalName = after_hos_name_controller.text.trim();
+       //String date = after_date_controller.text.trim();
+       String hospitalName = hos_name_controller.text.trim().replaceAll('/', '_');
+
+ 
+
+   
+      // Specify the file name and format as .jpeg
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('HOSPITAL_IMAGES/${hospitalName}.jpeg');
+
+      // Use settable metadata to explicitly mention the MIME type (optional)
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+      
+      await storageReference.putFile(imageFile, metadata);
+      imageUrl = await storageReference.getDownloadURL();
+
+      setState(() {
+        Fluttertoast.showToast(msg: "Image uploaded successfully!");
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Error uploading image: $e");
+    }
+  }
+  
+
+
+  
+
+  
+
+
 
 
 
@@ -610,8 +721,128 @@ passcontroller.clear();
                   ],
                 ),
               )),
-
               SizedBox(height: screenHeight*0.08,),
+
+                Align(alignment: Alignment.center,child:Text("Upload Hospital License :",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+
+
+                Padding(
+  padding: EdgeInsets.all(40),
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: pickImageAndUpload_cam,
+              child: Column(
+                children: [
+                  Container(
+                    width: screenWidth*0.4,
+                    height: screenHeight*0.26,
+                    decoration: BoxDecoration(
+                     // color: Color.fromARGB(255, 222, 5, 5),
+                     color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                         // color: const Color.fromARGB(255, 181, 28, 17).withOpacity(0.6),
+                        // color: Colors.green,
+                          color: Colors.blue.withOpacity(0.6),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Icon(Icons.camera)),
+                  ),
+                  SizedBox(height: screenHeight*0.02), // Add some spacing between icon and text
+                  Text(
+                    'Camera',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+          Expanded(
+            child: GestureDetector(
+              onTap: pickImageAndUpload
+               
+              ,
+              child: Column(
+                children: [
+                  Container(
+                    width: screenWidth*0.4,
+                    height:screenHeight*0.26,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.6),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Icon(Icons.image)),
+                  ),
+                  SizedBox(height: screenHeight*0.02), // Add some spacing between icon and text
+                  Text(
+                    'Gallery',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
+
+
+             /*  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+             /* GestureDetector(
+                onTap:pickImageAndUpload,
+                child: Container(alignment:Alignment.center ,
+            height: screenHeight*0.1,
+            width: screenWidth*0.3,
+           // color: Colors.red,
+           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
+           child: Icon(Icons.upload_rounded),
+            )),*/
+            GestureDetector(onTap:pickImageAndUpload,
+              child:
+             Container(alignment:Alignment.center ,
+            height: screenHeight*0.2,
+            width: screenWidth*0.3,
+            child:Row( 
+              children: [
+                SizedBox(width: screenWidth*0.04,),
+                
+              
+              Icon(Icons.upload_rounded),
+
+              Text('Hospital Image',style: TextStyle(fontWeight: FontWeight.bold),)
+              ]),
+           // color: Colors.red,
+           decoration: BoxDecoration(borderRadius: BorderRadius.circular(40),color: Colors.blue),
+            ))
+          ]),*/
+          
+
+
+              SizedBox(height: screenHeight*0.04,),
 
                GestureDetector(
               onTap:(){

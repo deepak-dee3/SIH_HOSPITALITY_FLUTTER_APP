@@ -7,6 +7,7 @@ import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 import 'package:sih2024/PUBLIC/new.dart';
 import 'package:sih2024/PUBLIC/program_list.dart';
 import 'package:sih2024/sign_up_page.dart';
+import 'package:sih2024/test.dart';
 import 'firebase_options.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/HOSPITAL/after_event.dart';

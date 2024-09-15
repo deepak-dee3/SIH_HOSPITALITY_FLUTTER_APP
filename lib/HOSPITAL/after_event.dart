@@ -3,8 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
+import 'dart:io';
 import 'package:sih2024/FIREBASE/firebase_after_event.dart';
 import 'package:sih2024/HOSPITAL/hos_main_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class enter_details_hospoital extends StatefulWidget{
   @override
@@ -12,8 +20,26 @@ class enter_details_hospoital extends StatefulWidget{
 }
 
 class _enter_details_hospoitalState extends State<enter_details_hospoital> {
+  
+  
+
+    
+
+
+
+ 
+
+  
+
+     
+
+
+  
+
+
    String after_hos_name =' ',after_type=' ',after_program_name =' ',after_place=' ',after_date=' ',
    after_no_parti=' ',after_hours=' ',after_feedback=' ';
+    String imageurl = ' ';
  
 
   TextEditingController after_hos_name_controller = TextEditingController();
@@ -37,6 +63,113 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
     );
     return false; // Prevents the default back button action
   }
+   final ImagePicker _imagePicker = ImagePicker();
+  String? imageUrl;
+
+  Future<void> pickImageAndUpload() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+  /*Future<void> pickImagesAndUpload() async {
+  List<XFile>? images = await _imagePicker.pickMultiImage();
+
+  if (images != null && images.isNotEmpty) {
+    for (XFile image in images) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        await uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+}*/
+
+
+
+  Future<void> uploadToFirebase(File imageFile) async {
+    try {
+    
+      // String hospitalName = after_hos_name_controller.text.trim();
+       //String date = after_date_controller.text.trim();
+       String hospitalName = after_hos_name_controller.text.trim().replaceAll('/', '_');
+String date = after_date_controller.text.trim().replaceAll('/', '_');
+String programName = after_program_name_contoller.text.trim().replaceAll('/', '_');
+ 
+
+   
+      // Specify the file name and format as .jpeg
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('HOSPITAL_AFTER_EVENT_IMAGES/${hospitalName}_${date}_${programName}.jpeg');
+
+      // Use settable metadata to explicitly mention the MIME type (optional)
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+      
+      await storageReference.putFile(imageFile, metadata);
+      imageUrl = await storageReference.getDownloadURL();
+
+      setState(() {
+        Fluttertoast.showToast(msg: "Image uploaded successfully!");
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Error uploading image: $e");
+    }
+  }
+  /*
+  Future<void> uploadToFirebase(File imageFile) async {
+  try {
+    String hospitalName = after_hos_name_controller.text.trim().replaceAll('/', '_');
+    String date = after_date_controller.text.trim().replaceAll('/', '_');
+    String programName = after_program_name_contoller.text.trim().replaceAll('/', '_');
+
+    // Create a unique file name for each image
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('HOSPITAL_AFTER_EVENT_IMAGES/${hospitalName}_${date}_${programName}_$fileName.jpeg');
+
+    // Use settable metadata to explicitly mention the MIME type (optional)
+    SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+    
+    await storageReference.putFile(imageFile, metadata);
+    imageUrl = await storageReference.getDownloadURL();
+
+    setState(() {
+      Fluttertoast.showToast(msg: "Image uploaded successfully!");
+    });
+  } catch (e) {
+    Fluttertoast.showToast(msg: "Error uploading image: $e");
+  }
+}*/
+
+
+  
+
+  
+
 
 
   @override
@@ -302,7 +435,7 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
           SizedBox(height: screenHeight*0.04,),
            Align(
             alignment: Alignment.centerLeft,
-            child:Text("Upload Program Images :" , style:TextStyle(fontWeight: FontWeight.bold))
+            child:Text("Upload Program Image :" , style:TextStyle(fontWeight: FontWeight.bold))
           ),
           SizedBox(height: screenHeight*0.04,),
 
@@ -310,20 +443,24 @@ class _enter_details_hospoitalState extends State<enter_details_hospoital> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(alignment:Alignment.center ,
+             /* GestureDetector(
+                onTap:pickImageAndUpload,
+                child: Container(alignment:Alignment.center ,
             height: screenHeight*0.1,
             width: screenWidth*0.3,
            // color: Colors.red,
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
            child: Icon(Icons.upload_rounded),
-            ),
+            )),*/
+            GestureDetector(onTap:pickImageAndUpload,
+              child:
              Container(alignment:Alignment.center ,
             height: screenHeight*0.1,
             width: screenWidth*0.3,
             child: Icon(Icons.upload_rounded),
            // color: Colors.red,
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue),
-            )
+            ))
           ]),
 
           SizedBox(height: screenHeight*0.04,),

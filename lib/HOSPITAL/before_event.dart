@@ -4,6 +4,13 @@ import 'package:lottie/lottie.dart';
 import 'package:sih2024/FIREBASE/firebase_before.dart';
 import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
 
 class before_event extends StatefulWidget{
   @override
@@ -29,6 +36,91 @@ class before_event_pageState extends State<before_event> {
   
 
   final before_formkey = GlobalKey<FormState>();
+
+   final ImagePicker _imagePicker = ImagePicker();
+  String? imageUrl;
+
+  Future<void> pickImageAndUpload() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 200 * 1024) {
+        // Upload the image to Firebase
+        uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+
+   Future<void> pickImageAndUpload_cam() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      // Optionally, compress the image
+      int fileSize = await imageFile.length();
+      if (fileSize <= 5000 * 1024) {
+        // Upload the image to Firebase
+        uploadToFirebase(imageFile);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Please pick an image below 200 KB in size.',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    }
+  }
+ 
+
+ 
+
+
+  Future<void> uploadToFirebase(File imageFile) async {
+    try {
+    
+      // String hospitalName = after_hos_name_controller.text.trim();
+       //String date = after_date_controller.text.trim();
+       String hospitalName = before_hos_name_controller.text.trim().replaceAll('/', '_');
+String date = before_date_contoller.text.trim().replaceAll('/', '_');
+String programName = before_program_name_contoller.text.trim().replaceAll('/', '_');
+ 
+
+   
+      // Specify the file name and format as .jpeg
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('HOSPITAL_BEFORE_PREMIT_PROOF/${hospitalName}_${date}_${programName}.jpeg');
+
+      // Use settable metadata to explicitly mention the MIME type (optional)
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+      
+      await storageReference.putFile(imageFile, metadata);
+      imageUrl = await storageReference.getDownloadURL();
+
+      setState(() {
+        Fluttertoast.showToast(msg: "Image uploaded successfully!");
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Error uploading image: $e");
+    }
+  }
+ 
+
+
+
+  
+
+  
+
 
 
 
@@ -224,7 +316,96 @@ class before_event_pageState extends State<before_event> {
           )
           ),
 
-          SizedBox(height: screenHeight*0.06,),
+          SizedBox(height: screenHeight*0.04,),
+                    Align(alignment: Alignment.centerLeft,child:Text("Upload Permit Letter Image :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+                      Padding(
+  padding: EdgeInsets.all(40),
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: pickImageAndUpload_cam,
+              child: Column(
+                children: [
+                  Container(
+                    width: screenWidth*0.4,
+                    height: screenHeight*0.12,
+                    decoration: BoxDecoration(
+                     // color: Color.fromARGB(255, 222, 5, 5),
+                     color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                        //  color: const Color.fromARGB(255, 181, 28, 17).withOpacity(0.6),
+                          color: Colors.blue.withOpacity(0.6),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Icon(Icons.camera)),
+                  ),
+                  SizedBox(height: screenHeight*0.01), // Add some spacing between icon and text
+                  Text(
+                    'Camera',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+          Expanded(
+            child: GestureDetector(
+              onTap: pickImageAndUpload
+               
+              ,
+              child: Column(
+                children: [
+                  Container(
+                    width: screenWidth*0.4,
+                    height:screenHeight*0.12,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.6),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Icon(Icons.image)),
+                  ),
+                  SizedBox(height: screenHeight*0.01), // Add some spacing between icon and text
+                  Text(
+                    'Gallery',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
+
+
+
+
+
+
+           SizedBox(height: screenHeight*0.04,),
 
             GestureDetector(
               onTap:(){

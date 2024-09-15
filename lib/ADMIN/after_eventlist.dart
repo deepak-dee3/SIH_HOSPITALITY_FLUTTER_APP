@@ -247,6 +247,8 @@ class _EventsListPagesState extends State<EventsListPages> {
                             tileColor: Colors.blue,
                             title: Text(
                               event['Program'].toUpperCase(),
+                              maxLines: 1, 
+                                            overflow: TextOverflow.ellipsis, 
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),
                             ),
                             subtitle: Padding(
@@ -257,6 +259,8 @@ class _EventsListPagesState extends State<EventsListPages> {
                                   SizedBox(width: screenWidth * 0.01),
                                   Text(
                                     event['Hospital_name'].toUpperCase(),
+                                    maxLines: 1, 
+                                            overflow: TextOverflow.ellipsis, 
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14,color: Colors.white),
                                   ),
                                 ],
@@ -264,6 +268,8 @@ class _EventsListPagesState extends State<EventsListPages> {
                             ),
                             trailing: Text(
                               event['Date Of Event'],
+                              maxLines: 1, 
+                                            overflow: TextOverflow.ellipsis, 
                               style: TextStyle(
                                 color: Color.fromARGB(255, 148, 26, 17),
                                 fontWeight: FontWeight.bold,

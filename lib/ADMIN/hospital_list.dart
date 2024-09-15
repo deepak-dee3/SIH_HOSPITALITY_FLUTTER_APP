@@ -103,6 +103,8 @@ class _HospitalListState extends State<HospitalList> {
                                   SizedBox(width: screenWidth * 0.02),
                                   Text(
                                     hospitalData['hospital_name'].toUpperCase() ?? 'No Name',
+                                    maxLines: 1, 
+                                            overflow: TextOverflow.ellipsis, 
                                     style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -117,6 +119,8 @@ class _HospitalListState extends State<HospitalList> {
                                       SizedBox(width: screenWidth * 0.04),
                                       Text(
                                         hospitalData['location'].toUpperCase() ?? 'No Location',
+                                        maxLines: 1, 
+                                            overflow: TextOverflow.ellipsis, 
                                         style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                       ),
                                     ],
