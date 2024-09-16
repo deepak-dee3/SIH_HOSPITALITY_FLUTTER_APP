@@ -310,6 +310,165 @@ class EventDetailPages_admin extends StatelessWidget {
                   ],
                 ),
               )),
+              SizedBox(height: screenHeight *0.04),
+              Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.03),
+                      spreadRadius: 10,
+                      blurRadius: 3,
+                      // changes position of shadow
+                    ),
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, top: 15, bottom: 5, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                   
+                    Text(
+                      'Sponser By :',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                         // color: Color(0xff67727d)
+                         color:Colors.green
+                          ),
+                    ),
+                    TextFormField(
+                      readOnly: true,
+                    
+                   
+                      cursorColor: Colors.black,
+                      style: TextStyle(
+                        
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.event,color: Colors.green,),
+                         
+                          prefixIconColor: Colors.black,
+                          hintText: "${event['Sponser']}".toUpperCase(),
+                          hintStyle: TextStyle(color: Colors.black),
+                          border: InputBorder.none),
+                    ),
+                  ],
+                ),
+              )),
+              SizedBox(height: screenHeight *0.04),
+              Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.03),
+                      spreadRadius: 10,
+                      blurRadius: 3,
+                      // changes position of shadow
+                    ),
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, top: 15, bottom: 5, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                   
+                    Text(
+                      'Sponser Amount :',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                         // color: Color(0xff67727d)
+                         color:Colors.green
+                          ),
+                    ),
+                    TextFormField(
+                      readOnly: true,
+                    
+                   
+                      cursorColor: Colors.black,
+                      style: TextStyle(
+                        
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.event,color: Colors.green,),
+                         
+                          prefixIconColor: Colors.black,
+                          hintText: "${event['Sponser_amount']}".toUpperCase(),
+                          hintStyle: TextStyle(color: Colors.black),
+                          border: InputBorder.none),
+                    ),
+                  ],
+                ),
+              )),
+              SizedBox(height: screenHeight *0.04),
+              Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.03),
+                      spreadRadius: 10,
+                      blurRadius: 3,
+                      // changes position of shadow
+                    ),
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, top: 15, bottom: 5, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                   
+                    Text(
+                      'Program Mode :',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                         // color: Color(0xff67727d)
+                         color:Colors.green
+                          ),
+                    ),
+                    TextFormField(
+                      readOnly: true,
+                    
+                   
+                      cursorColor: Colors.black,
+                      style: TextStyle(
+                        
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.event,color: Colors.green,),
+                         
+                          prefixIconColor: Colors.black,
+                          hintText: "${event['Mode_of_program']}".toUpperCase(),
+                          hintStyle: TextStyle(color: Colors.black),
+                          border: InputBorder.none),
+                    ),
+                  ],
+                ),
+              )),
                SizedBox(height: screenHeight *0.04),
               Container(
               width: double.infinity,

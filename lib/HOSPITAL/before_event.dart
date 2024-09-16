@@ -21,7 +21,8 @@ class before_event extends StatefulWidget{
 class before_event_pageState extends State<before_event> {
 
 
-   String before_hos_name =' ',before_program_name =' ',before_place=' ',before_date=' ',before_availability=' ',before_sd=' ',before_dis=' ',before_state=' ';
+   String before_hos_name =' ',before_program_name =' ',before_place=' ',before_date=' ',before_availability=' ',before_sd=' ',before_dis=' ',before_state=' ',
+   before_mode=' ',before_sponser=' ',before_sp_amount=' ';
  
 
   TextEditingController before_hos_name_controller = TextEditingController();
@@ -32,6 +33,9 @@ class before_event_pageState extends State<before_event> {
   TextEditingController before_sub_dis_controller = TextEditingController();
   TextEditingController before_dis_contoller = TextEditingController();
   TextEditingController before_state_or_union_controller = TextEditingController();
+   TextEditingController before_sponser_controller = TextEditingController();
+  TextEditingController before_sponser_amount_contoller = TextEditingController();
+  TextEditingController before_mode_controller = TextEditingController();
 
   
   
@@ -107,7 +111,7 @@ Future<void> pickimage() async {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
-      if(before_availability_controller.text.isEmpty || before_date_contoller.text.isEmpty || before_dis_contoller.text.isEmpty || before_hos_name_controller.text.isEmpty || before_place_controller.text.isEmpty || before_program_name_contoller.text.isEmpty || before_state_or_union_controller.text.isEmpty || before_sub_dis_controller.text.isEmpty)
+      if(before_availability_controller.text.isEmpty || before_date_contoller.text.isEmpty || before_dis_contoller.text.isEmpty || before_hos_name_controller.text.isEmpty || before_place_controller.text.isEmpty || before_program_name_contoller.text.isEmpty || before_state_or_union_controller.text.isEmpty || before_sub_dis_controller.text.isEmpty || before_mode_controller.text.isEmpty || before_sponser_amount_contoller.text.isEmpty || before_sponser_controller.text.isEmpty)
       {
          Fluttertoast.showToast(msg: 'Please fill all the details');
         return;
@@ -124,6 +128,9 @@ Future<void> pickimage() async {
              before_sd,
              before_dis,
              before_state,
+             before_mode,
+             before_sponser,
+             before_sp_amount,
 
           );
          
@@ -331,6 +338,99 @@ validator: (value) {
           )
           ),
           SizedBox(height: screenHeight*0.04,),
+
+           Align(alignment: Alignment.centerLeft,child:Text("Sponser By :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+            controller: before_sponser_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the organisation / institution name *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
+
+            decoration: InputDecoration(
+              hintText: 'eg : abc groups',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),SizedBox(height: screenHeight*0.04,),
+
+           Align(alignment: Alignment.centerLeft,child:Text("Sponser Amount :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+             keyboardType: TextInputType.number,
+            controller: before_sponser_amount_contoller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the sponser amount by organisation / institution *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
+
+            decoration: InputDecoration(
+              hintText: 'eg : 1,00,000',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),SizedBox(height: screenHeight*0.04,),
+
+            Align(alignment: Alignment.centerLeft,child:Text("Program Mode :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+
+           SizedBox(height: screenHeight*0.02,),
+          Container(height: screenHeight*0.08,width: screenWidth*0.8,
+          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20)),
+          child:TextFormField(
+            cursorColor: Colors.black,
+           //  keyboardType: TextInputType.number,
+            controller: before_mode_controller,
+             validator: (value){
+                    if(value == null || value.isEmpty)
+                    {
+                      return "Enter the mode of the program *";
+                    }
+                    
+                   
+                   
+                    return null;
+                  },
+
+            decoration: InputDecoration(
+              hintText: 'eg : Free / Paid + amount',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left:10,top: 13),
+              
+              
+            ),
+
+          )
+          ),SizedBox(height: screenHeight*0.04,),
+
 
           Align(alignment: Alignment.centerLeft,child:Text("Availability :",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
 
@@ -579,6 +679,9 @@ validator: (value) {
              before_sd = before_sub_dis_controller.text.trim();
              before_dis = before_dis_contoller.text.trim();
              before_state = before_state_or_union_controller.text.trim();
+             before_mode = before_mode_controller.text.trim();
+             before_sponser = before_sponser_controller.text.trim();
+             before_sp_amount = before_sponser_amount_contoller.text.trim();
 
             });
           }

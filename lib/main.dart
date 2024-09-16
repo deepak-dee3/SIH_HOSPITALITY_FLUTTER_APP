@@ -6,9 +6,11 @@ import 'package:sih2024/FORGET%20PASSWORD/forget_password.dart';
 import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 import 'package:sih2024/PUBLIC/new.dart';
 import 'package:sih2024/PUBLIC/program_list.dart';
+import 'package:sih2024/abc.dart';
 import 'package:sih2024/sign_up_page.dart';
 import 'package:sih2024/test.dart';
 import 'package:sih2024/test2.dart';
+import 'package:sih2024/transl.dart';
 import 'firebase_options.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/HOSPITAL/after_event.dart';
@@ -22,6 +24,7 @@ import 'FIREBASE/abc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async
 {
@@ -29,6 +32,11 @@ void main() async
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
+
+OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+OneSignal.initialize("f249323a-836c-4de7-9b62-d80485325fa4");
+OneSignal.Notifications.requestPermission(true);
+
   runApp(Myapp());
 }
 
