@@ -15,7 +15,19 @@ create(String b_hos_name,b_program_name,b_place,b_date,b_availability,b_sd,b_d,b
 
 }
 
-update(String collname,docname,field,var newfield) async{
+update_before(String b_hos_name,b_program_name,b_place,b_date,b_availability,b_sd,b_d,b_su,b_m,b_sp,b_s_a) async{
+
+
+  await FirebaseFirestore.instance.collection('BEFORE EVENT').doc(b_program_name).update({
+    'Hospital_name':b_hos_name,'Program':b_program_name,'Location':b_place,'Date Of Event':b_date,'Availability':b_availability,
+    'Sub_District':b_sd,'District':b_d,'State / Union Territory':b_su,'Mode_of_program':b_m,'Sponser':b_sp,'Sponser_amount':b_s_a
+    });
+
+  print('Hospital data is updated');
+
+}
+
+update1(String collname,docname,field,var newfield) async{
 
   await FirebaseFirestore.instance.collection(collname).doc(docname).update({field:newfield});
 
