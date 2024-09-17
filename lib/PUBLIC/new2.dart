@@ -108,7 +108,13 @@ class _EventDetailPagesState extends State<EventDetailPages> {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(translatedTitle.toUpperCase(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
@@ -464,7 +470,7 @@ class _EventDetailPagesState extends State<EventDetailPages> {
           ],
         ),
       ),
-    ));
+    )));
   }
 }
 

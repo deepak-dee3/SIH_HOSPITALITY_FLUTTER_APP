@@ -42,7 +42,7 @@ class _hos_opening_pageState extends State<hos_opening_page> {
             width: 100,child:Transform.scale(
             scale: 2.5, 
    
-            child:Lottie.asset('assets/ANIMATION/Animation - 1724386421518.json'),
+            child:Lottie.asset('assets/ANIMATION/Animation - 1726551103782.json'),
             ),),
           ),
 

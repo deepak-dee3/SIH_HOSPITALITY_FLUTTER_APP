@@ -152,7 +152,30 @@ class _LoginPageState extends State<LoginPage> {
     var screenHeight = MediaQuery.of(context).size.height;
     
 
-   return Scaffold(
+   return  WillPopScope(
+    onWillPop: () async {
+      return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 13, 124, 17),
+          shadowColor: const Color.fromARGB(255, 2, 69, 4),
+          title: Text('Confirm Exit',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+          content: Text('Are you sure you want to exit?',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),),
+          actions: <Widget>[
+             TextButton(
+              child: Text('Yes',style: TextStyle(color: Colors.white),),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+            TextButton(
+              child: Text('No',style: TextStyle(color: Colors.white),),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+           
+          ],
+        ),
+      );
+    },
+    child:Scaffold(
     backgroundColor: Colors.white,
     
 
@@ -537,6 +560,6 @@ Align(
 
    
     
-   )));
+   ))));
   }
 }

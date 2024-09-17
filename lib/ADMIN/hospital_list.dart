@@ -19,7 +19,13 @@ class _HospitalListState extends State<HospitalList> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
+    return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -139,6 +145,6 @@ class _HospitalListState extends State<HospitalList> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

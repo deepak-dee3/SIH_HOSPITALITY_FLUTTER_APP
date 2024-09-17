@@ -181,7 +181,12 @@ Future<void> pickimage() async {
         imageurl = await image_ref.getDownloadURL();
         after_hos_name_controller.clear();
         
-        Navigator.push(context, MaterialPageRoute(builder: (context) => hos_opening_page()));
+         Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => hos_opening_page()),
+        (route) => false,
+      );
+
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

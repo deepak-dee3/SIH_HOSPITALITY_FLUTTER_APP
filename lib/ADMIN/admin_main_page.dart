@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sih2024/ADMIN/after_eventlist.dart';
 import 'package:sih2024/ADMIN/hospital_list.dart';
+import 'package:sih2024/ADMIN/new_event.dart';
 import 'package:sih2024/ADMIN/program_list_admin.dart';
 import 'package:sih2024/HOSPITAL/before_event.dart';
 import 'package:sih2024/PUBLIC/new.dart';
@@ -20,7 +21,13 @@ class _admin_main_pageState extends State<admin_main_page> {
     var screenHeight = MediaQuery.of(context).size.width;
     var screenWidth = MediaQuery.of(context).size.height;
 
-   return Scaffold(
+   return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:  Scaffold(
     backgroundColor: Colors.white,
     
 
@@ -85,7 +92,7 @@ class _admin_main_pageState extends State<admin_main_page> {
         Center(child: Text('Hospital',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),))]))),
 
 GestureDetector(onTap:(){
-  Navigator.push(context, MaterialPageRoute(builder: (context) => before_event()));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => new_event()));
 },
   child:
       Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.blue), child:Column(children:[ 
@@ -99,6 +106,6 @@ GestureDetector(onTap:(){
         ],
       )
     ),)
-   );
+   ));
   }
 }

@@ -367,7 +367,13 @@ Future<void> pickimage() async {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.width;
     var screenWidth = MediaQuery.of(context).size.height;
-   return Scaffold(
+   return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:Scaffold(
     backgroundColor: Colors.white,
 
     body:Padding(padding: EdgeInsets.all(16),child:Center(child:Container(
@@ -1080,6 +1086,6 @@ Future<void> pickimage() async {
 
       ],
     ),)))
-   )));
+   ))));
   }
 }

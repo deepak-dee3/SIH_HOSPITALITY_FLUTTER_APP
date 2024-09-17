@@ -151,6 +151,7 @@ class _EventsListPagesState extends State<EventsListPages> {
     ));
   }
 }*/
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'all_details_of_event.dart';
@@ -184,7 +185,13 @@ class _EventsListPagesState extends State<EventsListPages> {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:Scaffold(
       backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.center,
@@ -295,7 +302,7 @@ class _EventsListPagesState extends State<EventsListPages> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 

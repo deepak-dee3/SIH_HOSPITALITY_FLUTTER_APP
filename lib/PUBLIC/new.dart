@@ -555,7 +555,13 @@ class _EventsListPagessState extends State<EventsListPagess> {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
 
-    return GestureDetector(
+    return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:GestureDetector(
       onTap: _onTapOutside, // Hide keyboard when tapping outside the search bar
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -726,6 +732,6 @@ class _EventsListPagessState extends State<EventsListPagess> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

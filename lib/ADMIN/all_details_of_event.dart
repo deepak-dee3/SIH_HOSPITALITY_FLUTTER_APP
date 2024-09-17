@@ -9,7 +9,13 @@ class EventDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.width;
     var screenWidth = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return  WillPopScope(
+      onWillPop: () async {
+        // Handle back button press
+        Navigator.pop(context);
+        return true;
+      },
+      child:Scaffold(
       backgroundColor: Colors.white,
       body:SingleChildScrollView(scrollDirection: Axis.vertical,
         child: Container(alignment: Alignment.center,
@@ -391,6 +397,6 @@ class EventDetailPage extends StatelessWidget {
           ],
         ),
       ),
-    )));
+    ))));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sih2024/ADMIN/admin_main_page.dart';
 import 'package:sih2024/FIREBASE/firebase_before.dart';
 import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 import 'package:quickalert/quickalert.dart';
@@ -13,12 +14,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
 
-class before_event extends StatefulWidget{
+class new_event extends StatefulWidget{
   @override
-  State<before_event> createState() => before_event_pageState();
+  State<new_event> createState() => new_event_pageState();
 }
 
-class before_event_pageState extends State<before_event> {
+class new_event_pageState extends State<new_event> {
 
 
    String before_hos_name =' ',before_program_name =' ',before_place=' ',before_date=' ',before_availability=' ',before_sd=' ',before_dis=' ',before_state=' ',
@@ -164,10 +165,9 @@ Future<void> pickimage() async {
         
         Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => hos_opening_page()),
+        MaterialPageRoute(builder: (context) => admin_main_page()),
         (route) => false,
       );
-
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
