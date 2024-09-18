@@ -171,7 +171,7 @@ Future<void> pickimage() async {
        final program_name = "${after_program_name_contoller.text}";
         final date = "${after_date_controller.text}";
 
-      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_AFTER_EVENT_IMAGES/$hos_name.jpg');
+      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_AFTER_EVENT_IMAGES/$program_name.jpg');
 
       SettableMetadata metadata = SettableMetadata(
         contentType: 'image/jpeg',

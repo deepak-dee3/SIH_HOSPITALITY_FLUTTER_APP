@@ -149,10 +149,10 @@ Future<void> pickimage() async {
 
       final now = DateTime.now();
      // final formattedDate = "${now.day}-${now.month}-${now.year} ${now.hour}:${now.minute}:${now.second}";
-      final hos_name = "${before_hos_name_controller.text}_${before_program_name_contoller.text}_${before_date_contoller.text}";
-       
+    //  final hos_name = "${before_hos_name_controller.text}_${before_program_name_contoller.text}_${before_date_contoller.text}";
+       final prog = "${before_program_name_contoller.text}";
 
-      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_BEFORE_EVENT_IMAGES/$hos_name.jpg');
+      Reference image_ref = FirebaseStorage.instance.ref().child('HOSPITAL_BEFORE_EVENT_IMAGES/$prog.jpg');
 
       SettableMetadata metadata = SettableMetadata(
         contentType: 'image/jpeg',

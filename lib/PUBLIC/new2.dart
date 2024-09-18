@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:shimmer/shimmer.dart';
 
 
 class EventDetailPages extends StatefulWidget {
   final Map<String, dynamic> event;
+   final String hospital;
 
-  EventDetailPages({required this.event});
+  EventDetailPages({required this.event , required this.hospital});
 
   @override
   State<EventDetailPages> createState() => _EventDetailPagesState();
@@ -25,6 +28,7 @@ class _EventDetailPagesState extends State<EventDetailPages> {
   String originalMode = '';
   String originalTitle = 'Event Details';
    String translatedTitle = '';
+  
 
 
   String translatedProgram = '';
@@ -37,6 +41,7 @@ class _EventDetailPagesState extends State<EventDetailPages> {
    @override
   void initState() {
     super.initState();
+     getImageUrl(widget.hospital);
     // Initialize fields with original data
     originalProgram = widget.event['Program'];
     originalHospitalName = widget.event['Hospital_name'];
@@ -101,6 +106,33 @@ class _EventDetailPagesState extends State<EventDetailPages> {
       isEnglish = !isEnglish;
     });
   }
+   String imageUrl = '';
+
+
+  Future<void> getImageUrl(String programName) async {
+    String imagePath = 'HOSPITAL_IMAGES/$programName.jpg'; // Construct image path dynamically
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance.ref(imagePath);
+      final url = await ref.getDownloadURL();
+      setState(() {
+        imageUrl = url;
+      });
+      print('Image URL: $url');
+    } catch (e) {
+      print('Error getting image URL: $e');
+      if (e is firebase_storage.FirebaseException) {
+        print('Firebase Storage Error: ${e.code}');
+        print('Message: ${e.message}');
+      } else {
+        print('Unknown Error: $e');
+      }
+      // Provide a placeholder or default image if the image is not found
+      setState(() {
+        imageUrl = ''; // Optionally set a placeholder image URL here
+      });
+    }
+  }
 
 
 
@@ -135,14 +167,50 @@ class _EventDetailPagesState extends State<EventDetailPages> {
 
             SizedBox(height: screenHeight*0.06,),
 
-            Container(
-              alignment: Alignment.center,
-              child: CircleAvatar(
-                radius: 90,
-                backgroundColor: Colors.blue,
-                backgroundImage: NetworkImage('https://th.bing.com/th/id/OIP.js_m--7-FZoWCNrtRA-kQwHaFj?w=205&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7'),
+             GestureDetector(
+  onTap: () {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: InteractiveViewer(
+          panEnabled: true, // Enables panning (dragging)
+          minScale: 1.0,
+          maxScale: 4.0, // Allows zooming up to 4x
+          child: CircleAvatar(
+            radius: screenHeight * 0.25, // Adjust size as needed
+            backgroundImage: imageUrl.isNotEmpty 
+                ? NetworkImage(imageUrl) 
+                : null,
+            backgroundColor: Colors.blue[50], // Background color for empty image
+          ),
+        ),
+      ),
+    );
+  },
+  child: Align(
+    alignment: Alignment.center,
+    child: CircleAvatar(
+      radius: 100, // Adjust radius as needed
+      backgroundImage: imageUrl.isNotEmpty
+          ? NetworkImage(imageUrl)
+          : null,
+      backgroundColor: Colors.blue[50], // Blue background when no image
+      child: imageUrl.isEmpty
+          ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
               ),
-            ),
+            )
+          : null,
+    ),
+  ),
+),
+
              SizedBox(height: screenHeight*0.06,),
            
              Container(

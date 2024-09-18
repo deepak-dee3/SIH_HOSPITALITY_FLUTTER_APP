@@ -716,7 +716,7 @@ class _EventsListPagessState extends State<EventsListPagess> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EventDetailPages(event: event),
+                                    builder: (context) => EventDetailPages(event: event,hospital: event['Hospital_name']),
                                   ),
                                 );
                               },

@@ -1,11 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:sih2024/FIREBASE/firebase_imp.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:shimmer/shimmer.dart';
 
-class EventDetailPages_admin extends StatelessWidget {
+class EventDetailPages_admin extends StatefulWidget {
   final Map<String, dynamic> event;
+   final String program;
+    final String hospital;
 
-  EventDetailPages_admin({required this.event});
+  EventDetailPages_admin({required this.event , required this.program ,required this.hospital});
+
+  @override
+  State<EventDetailPages_admin> createState() => _EventDetailPages_adminState();
+}
+
+class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
+
+   String imageUrl = '';
+    String imageUrl1 = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getImageUrl(widget.program);
+    getImageUrl1(widget.hospital);
+    
+     // Pass program name to getImageUrl
+  }
+
+  Future<void> getImageUrl(String programName) async {
+    String imagePath = 'HOSPITAL_BEFORE_EVENT_IMAGES/$programName.jpg'; // Construct image path dynamically
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance.ref(imagePath);
+      final url = await ref.getDownloadURL();
+      setState(() {
+        imageUrl = url;
+      });
+      print('Image URL: $url');
+    } catch (e) {
+      print('Error getting image URL: $e');
+      if (e is firebase_storage.FirebaseException) {
+        print('Firebase Storage Error: ${e.code}');
+        print('Message: ${e.message}');
+      } else {
+        print('Unknown Error: $e');
+      }
+      // Provide a placeholder or default image if the image is not found
+      setState(() {
+        imageUrl = ''; // Optionally set a placeholder image URL here
+      });
+    }
+  }
+   Future<void> getImageUrl1(String programName1) async {
+    String imagePath1 = 'HOSPITAL_IMAGES/$programName1.jpg'; // Construct image path dynamically
+
+    try {
+      final ref1 = firebase_storage.FirebaseStorage.instance.ref(imagePath1);
+      final url1 = await ref1.getDownloadURL();
+      setState(() {
+        imageUrl1 = url1;
+      });
+      print('Image URL: $url1');
+    } catch (e) {
+      print('Error getting image URL: $e');
+      if (e is firebase_storage.FirebaseException) {
+        print('Firebase Storage Error: ${e.code}');
+        print('Message: ${e.message}');
+      } else {
+        print('Unknown Error: $e');
+      }
+      // Provide a placeholder or default image if the image is not found
+      setState(() {
+        imageUrl1 = ''; // Optionally set a placeholder image URL here
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +166,50 @@ class EventDetailPages_admin extends StatelessWidget {
       
       )),*/
 
-       Container(
-              alignment: Alignment.center,
-              child: CircleAvatar(
-                radius: 90,
-                backgroundColor: Colors.blueGrey,
-                backgroundImage: NetworkImage('https://th.bing.com/th/id/OIP.js_m--7-FZoWCNrtRA-kQwHaFj?w=205&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7'),
+        GestureDetector(
+  onTap: () {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: InteractiveViewer(
+          panEnabled: true, // Enables panning (dragging)
+          minScale: 1.0,
+          maxScale: 4.0, // Allows zooming up to 4x
+          child: CircleAvatar(
+            radius: screenHeight * 0.25, // Adjust size as needed
+            backgroundImage: imageUrl1.isNotEmpty 
+                ? NetworkImage(imageUrl1) 
+                : null,
+            backgroundColor: Colors.blue[50], // Background color for empty image
+          ),
+        ),
+      ),
+    );
+  },
+  child: Align(
+    alignment: Alignment.center,
+    child: CircleAvatar(
+      radius: 100, // Adjust radius as needed
+      backgroundImage: imageUrl1.isNotEmpty
+          ? NetworkImage(imageUrl1)
+          : null,
+      backgroundColor: Colors.blue[50], // Blue background when no image
+      child: imageUrl1.isEmpty
+          ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
               ),
-            ),
+            )
+          : null,
+    ),
+  ),
+),
+
              SizedBox(height: screenHeight*0.06,),
            
              Container(
@@ -148,7 +257,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Program']}".toUpperCase(),
+                          hintText: "${widget.event['Program']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -202,7 +311,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.local_hospital,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Hospital_name']}".toUpperCase(),
+                          hintText: "${widget.event['Hospital_name']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -256,7 +365,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Location']}".toUpperCase(),
+                          hintText: "${widget.event['Location']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -309,7 +418,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Date Of Event']}".toUpperCase(),
+                          hintText: "${widget.event['Date Of Event']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -362,7 +471,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Sponser']}".toUpperCase(),
+                          hintText: "${widget.event['Sponser']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -415,7 +524,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Sponser_amount']}".toUpperCase(),
+                          hintText: "${widget.event['Sponser_amount']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -468,7 +577,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Mode_of_program']}".toUpperCase(),
+                          hintText: "${widget.event['Mode_of_program']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -521,7 +630,7 @@ class EventDetailPages_admin extends StatelessWidget {
                           prefixIcon: Icon(Icons.event,color: Colors.green,),
                          
                           prefixIconColor: Colors.black,
-                          hintText: "${event['Availability']}".toUpperCase(),
+                          hintText: "${widget.event['Availability']}".toUpperCase(),
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none),
                     ),
@@ -529,6 +638,64 @@ class EventDetailPages_admin extends StatelessWidget {
                 ),
               )),
               SizedBox(height: screenHeight*0.06,),
+               Align(alignment: Alignment.center,
+              child:Text("Event Proof / Permit :",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),),
+
+               SizedBox(height: screenHeight*0.06,),
+               GestureDetector(
+  onTap: () {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: InteractiveViewer(
+          panEnabled: true, // Enables panning (dragging)
+          minScale: 1.0,
+          maxScale: 4.0, // Allows zooming up to 4x
+          child: Container(
+            width: double.infinity,
+            height: screenHeight * 0.5, // Adjust size as needed
+            decoration: BoxDecoration(
+             
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.contain, // Ensures the full image is shown
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  },
+  child: Align(
+    alignment: Alignment.center,
+    child: Container(
+      width: double.infinity,
+      height: 300, // Adjust height as needed
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        border: Border.all(color: Colors.blue, width: 2.0), // Blue border
+        image: imageUrl.isEmpty
+            ? null
+            : DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              ),
+      ),
+      child: imageUrl.isEmpty
+          ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                color: Colors.white,
+              ),
+            )
+          : null,
+    ),
+  ),
+),
+
+SizedBox(height: screenHeight*0.1,),
+
               GestureDetector(
 
               onTap: (){
@@ -545,7 +712,7 @@ class EventDetailPages_admin extends StatelessWidget {
               
               onDoubleTap:(){
                 
-                delete("BEFORE EVENT",event['Program']);
+                delete("BEFORE EVENT",widget.event['Program']);
 
               //  Navigator.push(context,MaterialPageRoute(builder: (context) => enter_details_hospoital()));
 

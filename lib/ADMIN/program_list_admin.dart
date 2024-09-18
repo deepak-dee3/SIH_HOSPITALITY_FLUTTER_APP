@@ -155,7 +155,7 @@ class _EventsListPagess_adminState extends State<EventsListPagess_admin> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EventDetailPages_admin(event: event),
+                                    builder: (context) => EventDetailPages_admin(event: event,program: event['Program'],hospital:event['Hospital_name']),
                                   ),
                                 );
                               },
