@@ -178,7 +178,7 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
           child: CircleAvatar(
             radius: screenHeight * 0.25, // Adjust size as needed
             backgroundImage: imageUrl1.isNotEmpty 
-                ? NetworkImage(imageUrl1) 
+                ? NetworkImage(imageUrl1,scale: 1.0) 
                 : null,
             backgroundColor: Colors.blue[50], // Background color for empty image
           ),
@@ -657,7 +657,7 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
             decoration: BoxDecoration(
              
               image: DecorationImage(
-                image: NetworkImage(imageUrl),
+                image: NetworkImage(imageUrl,scale:1.0),
                 fit: BoxFit.contain, // Ensures the full image is shown
               ),
             ),
