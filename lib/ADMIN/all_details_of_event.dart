@@ -77,7 +77,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
     var screenWidth = MediaQuery.of(context).size.height;
     return  WillPopScope(
       onWillPop: () async {
-        // Handle back button press
+       
         Navigator.pop(context);
         return true;
       },
