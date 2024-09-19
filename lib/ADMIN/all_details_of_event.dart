@@ -447,7 +447,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       color: Colors.grey.withOpacity(0.03),
                       spreadRadius: 10,
                       blurRadius: 3,
-                      // changes position of shadow
+                     
                     ),
                   ]),
               child: Padding(
@@ -497,17 +497,17 @@ class _EventDetailPageState extends State<EventDetailPage> {
       context: context,
       builder: (context) => Dialog(
         child: InteractiveViewer(
-          panEnabled: true, // Enables panning (dragging)
+          panEnabled: true, 
           minScale: 1.0,
-          maxScale: 4.0, // Allows zooming up to 4x
+          maxScale: 4.0, 
           child: Container(
             width: double.infinity,
-            height: screenHeight * 0.5, // Adjust size as needed
+            height: screenHeight * 0.5, 
             decoration: BoxDecoration(
              
               image: DecorationImage(
                 image: NetworkImage(imageUrl),
-                fit: BoxFit.contain, // Ensures the full image is shown
+                fit: BoxFit.contain, 
               ),
             ),
           ),
@@ -519,10 +519,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
     alignment: Alignment.center,
     child: Container(
       width: double.infinity,
-      height: 300, // Adjust height as needed
+      height: 300,
       decoration: BoxDecoration(
         color: Colors.blue[50],
-        border: Border.all(color: Colors.blue, width: 2.0), // Blue border
+        border: Border.all(color: Colors.blue, width: 2.0), 
         image: imageUrl.isEmpty
             ? null
             : DecorationImage(

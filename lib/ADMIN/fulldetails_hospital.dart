@@ -174,7 +174,7 @@ class HospitalDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.03),
                       spreadRadius: 10,
                       blurRadius: 3,
-                      // changes position of shadow
+                    
                     ),
                   ]),
               child: Padding(
@@ -227,7 +227,7 @@ class HospitalDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.03),
                       spreadRadius: 10,
                       blurRadius: 3,
-                      // changes position of shadow
+                     
                     ),
                   ]),
               child: Padding(
@@ -280,7 +280,7 @@ class HospitalDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.03),
                       spreadRadius: 10,
                       blurRadius: 3,
-                      // changes position of shadow
+                     
                     ),
                   ]),
               child: Padding(
@@ -333,7 +333,7 @@ class HospitalDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.03),
                       spreadRadius: 10,
                       blurRadius: 3,
-                      // changes position of shadow
+                      
                     ),
                   ]),
               child: Padding(
