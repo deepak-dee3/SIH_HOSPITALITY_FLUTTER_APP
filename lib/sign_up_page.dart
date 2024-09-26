@@ -268,7 +268,6 @@ Future<void> pickimage() async {
     }
   }
 
-  
   Future<File> compressImage(XFile image) async {
     final tempDir = await getTemporaryDirectory();
     final tempFilePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
