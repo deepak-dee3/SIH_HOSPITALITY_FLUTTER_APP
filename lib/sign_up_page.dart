@@ -42,7 +42,7 @@ class _sign_upState extends State<sign_up> {
   final _formkey= GlobalKey<FormState>();
   final storage = FlutterSecureStorage();
 
-  registration() async {
+  Future<void> registration() async {
     
     if(password!=null)
     {
@@ -85,7 +85,7 @@ landmark_controller.clear();
         }*/
         return null;
         }} }
-
+///////////////////////////////////
       /*  final ImagePicker _imagePicker = ImagePicker();
           List<File> _pickedImages = [];
   String? imageUrl;
@@ -316,7 +316,7 @@ Future<void> pickimage() async {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
-      registration();
+     
      
 
      
@@ -341,10 +341,11 @@ Future<void> pickimage() async {
 
       await image_ref.putFile(compressedFile, metadata).whenComplete(() async {
         imageurl = await image_ref.getDownloadURL();
+         registration();
         hos_name_controller.clear();
 
         //registration();
-        // await registration();
+       //  await registration();
         
         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 
@@ -487,17 +488,9 @@ Future<void> pickimage() async {
                    //  controller: login_emailcontroller,
                    controller: passcontroller,
                validator: (value) {
-  if (value == null || value.isEmpty) {
-    return "Enter your user password *";
-  } else if (value.length < 8) {
-    return "Password at least 8 characters long";
-  } else if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
-    return "Password at least one uppercase letter";
-  } else if (!RegExp(r'(?=.*[0-9])').hasMatch(value)) {
-    return "Password at least one number";
-  } else if (!RegExp(r'(?=.*[!@#\$%^&*()_+\-=\[\]{};:"\\|,.<>\/?])').hasMatch(value)) {
-    return "Password at least one special character";
-  }
+  if (value == null || value.isEmpty || value.length < 8 || !RegExp(r'(?=.*[A-Z])').hasMatch(value) || !RegExp(r'(?=.*[0-9])').hasMatch(value) || !RegExp(r'(?=.*[!@#\$%^&*()_+\-=\[\]{};:"\\|,.<>\/?])').hasMatch(value)) {
+    return "Contains [A-Z] , Special char , Number *";
+  } 
   return null;
 }
 ,
@@ -1060,13 +1053,10 @@ Future<void> pickimage() async {
                     spreadRadius: 1,
                     offset: Offset(0, 0),
                   ),
-                 
-                  
+  
                 ],
         borderRadius: BorderRadius.circular(40),
         color: const Color.fromARGB(255, 13, 124, 17),
-       
-      
       ),child:
       
         Text('Sign Up',style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 17,))
