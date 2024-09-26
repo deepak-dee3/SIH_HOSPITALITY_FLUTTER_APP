@@ -1063,19 +1063,6 @@ Future<void> pickimage() async {
       
       )),
       SizedBox(height: screenHeight*0.08,)
-
-         
-
-         
-             
-
-
-
-
-
-
-
-
       ],
     ),)))
    ))));
