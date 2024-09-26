@@ -316,6 +316,7 @@ Future<void> pickimage() async {
         Fluttertoast.showToast(msg: 'Please pick an image');
         return;
       }
+      registration();
      
 
      
@@ -342,7 +343,8 @@ Future<void> pickimage() async {
         imageurl = await image_ref.getDownloadURL();
         hos_name_controller.clear();
 
-        registration();
+        //registration();
+        // await registration();
         
         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 
