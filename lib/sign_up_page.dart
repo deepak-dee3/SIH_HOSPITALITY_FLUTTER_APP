@@ -54,16 +54,11 @@ class _sign_upState extends State<sign_up> {
        // await storage.delete(key: 'password');
              create(hos_name,email,head_hos,hos_type,hos_loc,landmark,phone,add_phone);
              
-             
-             
-
-       
        Navigator.pushAndRemoveUntil(
   context,
   MaterialPageRoute(builder: (context) => LoginPage()),
   (Route<dynamic> route) => false, 
 );
-
 emailcontroller.clear();
 hos_name_controller.clear();
 passcontroller.clear();
@@ -73,8 +68,6 @@ hos_type_controller.clear();
 phonecontroller.clear();
 add_phone_controller.clear();
 landmark_controller.clear();
-       
-
       }on FirebaseAuthException catch (e)
       {
         if(e.code == 'weak passord'){
