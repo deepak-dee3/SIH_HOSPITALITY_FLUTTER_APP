@@ -717,9 +717,7 @@ Future<void> pickimage() async {
   }
 
   return null;
-}
-
-,
+},
                       cursorColor: Colors.black,
                       style: TextStyle(
                           fontSize: 17,

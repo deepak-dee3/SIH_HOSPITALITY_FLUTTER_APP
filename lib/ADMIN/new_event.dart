@@ -499,7 +499,7 @@ validator: (value) {
 
 
             decoration: InputDecoration(
-              hintText: 'eg : Perundurai',
+              hintText: 'eg : Seelampur',
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left:10,top: 13),
               
@@ -534,7 +534,7 @@ validator: (value) {
 
 
             decoration: InputDecoration(
-              hintText: 'eg : Erode',
+              hintText: 'eg : North East Delhi',
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left:10,top: 13),
               
@@ -569,7 +569,7 @@ validator: (value) {
 
 
             decoration: InputDecoration(
-              hintText: 'eg : TamilNadu / Puducherry',
+              hintText: 'eg : Delhi',
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left:10,top: 13),
               

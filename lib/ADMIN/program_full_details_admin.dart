@@ -166,7 +166,7 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
       
       )),*/
 
-        GestureDetector(
+      /*  GestureDetector(
   onTap: () {
     showDialog(
       context: context,
@@ -177,8 +177,8 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
           maxScale: 4.0, // Allows zooming up to 4x
           child: CircleAvatar(
             radius: screenHeight * 0.25, // Adjust size as needed
-            backgroundImage: imageUrl1.isNotEmpty 
-                ? NetworkImage(imageUrl1,scale: 1.0) 
+            backgroundImage: imageUrl.isNotEmpty 
+                ? NetworkImage(imageUrl,scale: 1.0) 
                 : null,
             backgroundColor: Colors.blue[50], // Background color for empty image
           ),
@@ -190,11 +190,11 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
     alignment: Alignment.center,
     child: CircleAvatar(
       radius: 100, // Adjust radius as needed
-      backgroundImage: imageUrl1.isNotEmpty
-          ? NetworkImage(imageUrl1)
+      backgroundImage: imageUrl.isNotEmpty
+          ? NetworkImage(imageUrl)
           : null,
       backgroundColor: Colors.blue[50], // Blue background when no image
-      child: imageUrl1.isEmpty
+      child: imageUrl.isEmpty
           ? Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.grey[100]!,
@@ -208,7 +208,12 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
           : null,
     ),
   ),
-),
+),*/
+Center(child: CircleAvatar(
+  radius: 100,
+  backgroundImage: AssetImage('assets/manipal hospitals.jpg'),
+  
+),),
 
              SizedBox(height: screenHeight*0.06,),
            
@@ -657,7 +662,8 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
             decoration: BoxDecoration(
              
               image: DecorationImage(
-                image: NetworkImage(imageUrl,scale:1.0),
+               // image: NetworkImage(imageUrl1,scale:1.0),
+               image:AssetImage("assets/proof.jpg"),
                 fit: BoxFit.contain, // Ensures the full image is shown
               ),
             ),
@@ -674,14 +680,15 @@ class _EventDetailPages_adminState extends State<EventDetailPages_admin> {
       decoration: BoxDecoration(
         color: Colors.blue[50],
         border: Border.all(color: Colors.blue, width: 2.0), // Blue border
-        image: imageUrl.isEmpty
+        image: imageUrl1.isEmpty
             ? null
             : DecorationImage(
-                image: NetworkImage(imageUrl),
+               // image: NetworkImage(imageUrl1),
+               image:AssetImage("assets/proof.jpg"),
                 fit: BoxFit.cover,
               ),
       ),
-      child: imageUrl.isEmpty
+      child: imageUrl1.isEmpty
           ? Shimmer.fromColors(
               baseColor: Colors.grey[300]!,
               highlightColor: Colors.grey[100]!,

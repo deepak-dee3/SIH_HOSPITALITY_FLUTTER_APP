@@ -83,7 +83,8 @@ class _EventDetailPagesState extends State<EventDetailPages> {
 
   void toggleLanguage() {
     if (isEnglish) {
-      translateFields('hi');
+     // translateFields('hi');
+     translateFields('ta');
 
     } 
    /* else if(isHindi)
