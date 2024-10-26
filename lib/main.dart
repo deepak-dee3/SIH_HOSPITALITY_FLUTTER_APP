@@ -7,6 +7,7 @@ import 'package:sih2024/HOSPITAL/hos_main_page.dart';
 import 'package:sih2024/PUBLIC/new.dart';
 import 'package:sih2024/PUBLIC/program_list.dart';
 import 'package:sih2024/abc.dart';
+import 'package:sih2024/enc_checking.dart';
 import 'package:sih2024/sign_up_page.dart';
 import 'package:sih2024/test.dart';
 import 'package:sih2024/test2.dart';
@@ -25,6 +26,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:encryptor/encryptor.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async
 {
@@ -79,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController login_emailcontroller = TextEditingController();
   TextEditingController login_passcontroller = TextEditingController();
     TextEditingController passkeyController = TextEditingController();
+    var encrypted_text , plain_text;
 
   
 

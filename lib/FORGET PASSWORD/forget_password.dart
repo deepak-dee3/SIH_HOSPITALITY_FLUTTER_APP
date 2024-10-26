@@ -40,6 +40,9 @@ class _forgetpasswordState extends State<forgetpassword> {
 
   @override
   Widget build(BuildContext context) {
+
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
     
     return  WillPopScope(
       onWillPop: () async{
@@ -49,6 +52,7 @@ class _forgetpasswordState extends State<forgetpassword> {
       },
       child:
     Scaffold(
+      backgroundColor: Colors.white,
 
       body:
       /*Metaballs(
@@ -80,7 +84,7 @@ class _forgetpasswordState extends State<forgetpassword> {
        
         child:Column(children: [
 
-          SizedBox(height:70),
+          SizedBox(height:screenHeight*0.08),
 
          Shimmer.fromColors(
           period: Duration(milliseconds: 4000),
@@ -106,14 +110,14 @@ class _forgetpasswordState extends State<forgetpassword> {
             child:Form(key:forget_formkey,
               child:Column(children: [
 
-              SizedBox(height:10),
+              SizedBox(height:screenHeight*0.013),
 
               Text('Enter Your Email',style:TextStyle(shadows: [
                 Shadow(color: Colors.black,blurRadius: 7)
               ],
                 fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20)),
 
-              SizedBox(height:40),
+              SizedBox(height:screenHeight*0.043),
 
 
             Padding(padding:EdgeInsets.all(15),child:TextFormField(
@@ -136,13 +140,15 @@ class _forgetpasswordState extends State<forgetpassword> {
                           fontWeight: FontWeight.w500,
                           color: Colors.red),
             
-            decoration: InputDecoration(prefixIcon: Icon(Icons.mark_email_read_outlined),errorStyle: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+             
+              prefixIcon: Icon(Icons.mark_email_read_outlined,color: Colors.green,),errorStyle: TextStyle(color: Colors.white),
              prefixIconColor: Color.fromARGB(255, 29, 2, 110),
              
              
 
             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color:Color.fromARGB(255, 29, 2, 110))),
-              hintText: 'Enter your mail here',hintStyle: TextStyle(shadows: [
+              hintText: 'Enter your mail ',hintStyle: TextStyle(shadows: [
                 Shadow(color: Colors.black,blurRadius: 7)
               ],
                 fontSize: 13,color:Colors.white),
@@ -155,7 +161,7 @@ class _forgetpasswordState extends State<forgetpassword> {
 
 
 
-          SizedBox(height: 40,),
+          SizedBox(height: screenHeight*0.043),
 
           SizedBox(width:200,height: 60,child: ElevatedButton(onPressed: (){
 
@@ -167,7 +173,7 @@ class _forgetpasswordState extends State<forgetpassword> {
               forgetpassword();
             }
             
-          },style: ElevatedButton.styleFrom(backgroundColor: Colors.green) ,child: Text('Send mail',style:TextStyle(fontWeight: FontWeight.bold,color: Colors.white))),)
+          },style: ElevatedButton.styleFrom(backgroundColor: Colors.green.withOpacity(0.9)) ,child: Text('Send mail',style:TextStyle(fontWeight: FontWeight.bold,color: Colors.white))),)
 
         ],)
       )

@@ -54,6 +54,7 @@ dependencies:
   translator: ^1.0.0
   onesignal_flutter: ^5.2.5
   cached_network_image: ^3.4.1
+  encryptor: ^0.0.1
  
  
   
